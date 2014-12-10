@@ -21,7 +21,7 @@ endif()
 # Versioning.
 set(${PROJECT_NAME}_MAJOR_VERSION 0) 
 set(${PROJECT_NAME}_MINOR_VERSION 0) 
-set(${PROJECT_NAME}_PATCH_LEVEL 1)
+set(${PROJECT_NAME}_BUILD_VERSION 1)
 
 include(platform)
 include(target)
@@ -30,6 +30,6 @@ add_subdirectory(src)
 
 message(STATUS "--------------------------------------------------")
 message(STATUS "BUILD: ${CMAKE_BUILD_TYPE}")
-message(STATUS "VERSION: ${${PROJECT_NAME}_MAJOR_VERSION}.${${PROJECT_NAME}_MINOR_VERSION}.${${PROJECT_NAME}_PATCH_LEVEL}")
+message(STATUS "VERSION: ${${PROJECT_NAME}_MAJOR_VERSION}.${${PROJECT_NAME}_MINOR_VERSION}.${${PROJECT_NAME}_BUILD_VERSION}")
 message(STATUS "Using C++11 features")
 message(STATUS "--------------------------------------------------")

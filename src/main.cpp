@@ -1,13 +1,16 @@
+#include <QDebug>
+#include <QString>
+#include <QStringList>
 #include <QCoreApplication>
 #include <QCommandLineParser>
-#include <QStringList>
-#include <QString>
-#include <QDebug>
+
+#include "Version.h"
+using namespace burator::blurator;
 
 int main(int argc, char **argv) {
 	QCoreApplication app(argc, argv);
 	QCoreApplication::setApplicationName("Blurator");
-	QCoreApplication::setApplicationVersion("0.1");
+	QCoreApplication::setApplicationVersion(versionString());
 
   QCommandLineParser parser;
   parser.setApplicationDescription("Blur license plates and faces");
