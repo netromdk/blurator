@@ -4,8 +4,9 @@
 #include <QCoreApplication>
 #include <QCommandLineParser>
 
+#include "Global.h"
 #include "Version.h"
-using namespace burator::blurator;
+B_USE_NAMESPACE
 
 int main(int argc, char **argv) {
 	QCoreApplication app(argc, argv);

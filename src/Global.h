@@ -6,5 +6,6 @@
 
 #define B_BEGIN_NAMEPACE namespace BURATOR_NAMESPACE { namespace BLURATOR_NAMESPACE {
 #define B_END_NAMESPACE } }
+#define B_USE_NAMESPACE using namespace BURATOR_NAMESPACE::BLURATOR_NAMESPACE;
 
 #endif // B_GLOBAL_H
