@@ -15,7 +15,6 @@ set(CMAKE_AUTOMOC ON) # Moc when necessary.
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
 
 # OpenCV
 find_package(OpenCV REQUIRED)
