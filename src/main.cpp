@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
   parser.setApplicationDescription("Blur license plates and faces");
   parser.addHelpOption();
   parser.addVersionOption();
-  parser.addPositionalArgument("image", QCoreApplication::translate("main",
+  parser.addPositionalArgument("path", QCoreApplication::translate("main",
   	                        "Path to images or image"));
 
   parser.process(app);
@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
   // ensure the arguments are passed
   if (args.isEmpty()) {
   	qDebug() << "Must provide path to images!";
-  	// should exit here!!
+  	return 0;
   } 
   QString path = args.at(0);
 
