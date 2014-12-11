@@ -15,10 +15,10 @@ Compilation
 To compile the source code and link the binaries do the following:
 
 1. Extract source and go into the diretory.
-2. mkdir build
-3. cd build
-4. cmake ..
-5. make
+2. `mkdir build`
+3. `cd build`
+4. `cmake ..`
+5. `make`
 
 This produces one binaries in the *bin* folder: blurator
 
