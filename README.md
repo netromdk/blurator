@@ -20,7 +20,9 @@ To compile the source code and link the binaries do the following:
 4. `cmake ..`
 5. `make`
 
-This produces one binaries in the *bin* folder: blurator
+This produces the release version binary in the *bin* folder: blurator
+
+For debugging purposes swap out the `cmake ..` command with `cmake -DCMAKE_BUILD_TYPE=Debug ..`.
 
 Usage
 =====
