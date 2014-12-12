@@ -1,5 +1,5 @@
-#ifndef MOCAM_FACE_DETECTOR_H
-#define MOCAM_FACE_DETECTOR_H
+#ifndef B_FACE_DETECTOR_H
+#define B_FACE_DETECTOR_H
 
 #include <QList>
 
@@ -27,4 +27,4 @@ private:
 
 B_END_NAMESPACE
 
-#endif // MOCAM_FACE_DETECTOR_H
+#endif // B_FACE_DETECTOR_H
