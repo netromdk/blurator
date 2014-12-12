@@ -4,6 +4,12 @@ add_executable(
 
   Util.h
   Util.cpp
+
+  Face.h
+  Face.cpp
+
+  FaceDetector.h
+  FaceDetector.cpp
   )
 
 qt5_use_modules(
@@ -16,4 +22,5 @@ target_link_libraries(
   ${PROJECT_NAME}
   opencv_core
   opencv_highgui
+  opencv_objdetect
   )
