@@ -5,6 +5,7 @@ set(DEV_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platfor
 add_definitions(
   -DMAC
   -DGCC_VISIBILITY
-  -mmacosx-version-min=${SDK_MIN})
+  -mmacosx-version-min=${SDK_MIN}
+  )
 
 set(CMAKE_OSX_SYSROOT ${DEV_SDK})

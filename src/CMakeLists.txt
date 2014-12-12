@@ -3,9 +3,17 @@ add_executable(
   main.cpp
 
   Util.h
-  Util.cpp)
+  Util.cpp
+  )
 
-QT5_USE_MODULES(${PROJECT_NAME} Core Gui)
-TARGET_LINK_LIBRARIES(
+qt5_use_modules(
   ${PROJECT_NAME}
-  ${OpenCV_LIBS})
+  Core
+  Gui
+  )
+
+target_link_libraries(
+  ${PROJECT_NAME}
+  opencv_core
+  opencv_highgui
+  )
