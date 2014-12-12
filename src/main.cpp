@@ -10,6 +10,7 @@
 #include "Types.h"
 #include "Global.h"
 #include "Version.h"
+#include "FaceDetector.h"
 B_USE_NAMESPACE
 
 int main(int argc, char **argv) {
@@ -52,5 +53,25 @@ int main(int argc, char **argv) {
     return -1;
   }
   qDebug() << "Loaded image..";
+
+  QString binPath = QCoreApplication::applicationDirPath();
+  QString faceFile = binPath + "/../../data/lbpcascade_frontalface.xml",
+    eyesFile = binPath + "/../../data/haarcascade_eye_tree_eyeglasses.xml";
+
+  FaceDetector detector(faceFile, eyesFile);
+  if (!detector.isValid()) {
+    qCritical() << "Could not setup facial detector.";
+    return -1;
+  }
+
+  qDebug() << "Detecting faces..";
+  QList<FacePtr> faces = detector.detect(image);
+  if (faces.isEmpty()) {
+    qDebug() << "Did not find any faces!";
+    return 0;
+  }
+
+  qDebug() << "Found" << faces.size() << "face(s).";
+  qDebug() << faces;
   return 0;
 }
