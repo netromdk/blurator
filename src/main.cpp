@@ -1,4 +1,5 @@
 #include <QFile>
+#include <QImage>
 #include <QDebug>
 #include <QString>
 #include <QByteArray>
@@ -73,5 +74,18 @@ int main(int argc, char **argv) {
 
   qDebug() << "Found" << faces.size() << "face(s).";
   qDebug() << faces;
+
+  // Render face overlays to an image file to visualize the result.
+  if (!faces.isEmpty()) {
+    QImage overlay = QImage::fromData(imageData);
+    Util::drawFaces(overlay, faces);
+    QString overlayFile = path + ".overlay.png";
+    if (overlay.save(overlayFile)) {
+      qDebug() << "Saved overlays to:" << overlayFile;
+    }
+    else {
+      qCritical() << "Could not save overlays";
+    }
+  }
   return 0;
 }
