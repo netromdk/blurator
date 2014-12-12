@@ -23,4 +23,5 @@ target_link_libraries(
   opencv_core
   opencv_highgui
   opencv_objdetect
+  opencv_imgproc
   )
