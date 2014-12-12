@@ -8,7 +8,7 @@
 
 #include "Util.h"
 
-B_BEGIN_NAMEPACE
+B_BEGIN_NAMESPACE
 
 MatPtr Util::imageToMat(const QString &file) {
   QFile f(file);

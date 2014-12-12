@@ -5,7 +5,7 @@
 
 #include "Global.h"
 
-B_BEGIN_NAMEPACE
+B_BEGIN_NAMESPACE
 
 #define MAJOR_VERSION 0
 #define MINOR_VERSION 0
