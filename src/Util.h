@@ -8,7 +8,7 @@ class QImage;
 class QString;
 class QByteArray;
 
-B_BEGIN_NAMEPACE
+B_BEGIN_NAMESPACE
 
 class Util {
 public:

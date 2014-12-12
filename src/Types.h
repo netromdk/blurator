@@ -7,7 +7,7 @@
 
 #include "Global.h"
 
-B_BEGIN_NAMEPACE
+B_BEGIN_NAMESPACE
 
 typedef std::shared_ptr<cv::Mat> MatPtr;
 
