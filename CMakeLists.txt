@@ -15,10 +15,19 @@ if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE MinSizeRel) 
 endif()
 
-# Versioning.
-set(${PROJECT_NAME}_MAJOR_VERSION 0) 
-set(${PROJECT_NAME}_MINOR_VERSION 0) 
-set(${PROJECT_NAME}_BUILD_VERSION 1)
+# Find current version from source code.
+file(
+  STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/Version.h"
+  VERSION_DATA REGEX "define.+_VERSION.+[0-9]+$"
+  )
+set(VERSION_NUMBER "")
+foreach (ver IN LISTS VERSION_DATA)
+  string(REGEX MATCH "[0-9]+" number ${ver})
+  set(VERSION_NUMBER "${VERSION_NUMBER}${number}.")
+endforeach()
+string(LENGTH ${VERSION_NUMBER} length)
+math(EXPR length "${length}-1")
+string(SUBSTRING ${VERSION_NUMBER} 0 ${length} VERSION_NUMBER)
 
 include(platform)
 include(target)
@@ -27,6 +36,6 @@ add_subdirectory(src)
 
 message(STATUS "--------------------------------------------------")
 message(STATUS "BUILD: ${CMAKE_BUILD_TYPE}")
-message(STATUS "VERSION: ${${PROJECT_NAME}_MAJOR_VERSION}.${${PROJECT_NAME}_MINOR_VERSION}.${${PROJECT_NAME}_BUILD_VERSION}")
+message(STATUS "VERSION: ${VERSION_NUMBER}")
 message(STATUS "Using C++11 features")
 message(STATUS "--------------------------------------------------")
