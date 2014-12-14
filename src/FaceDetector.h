@@ -9,13 +9,11 @@
 #include "Types.h"
 #include "Global.h"
 
-class QString;
-
 B_BEGIN_NAMESPACE
 
 class FaceDetector {
 public:
-  FaceDetector(const QString &faceCascade, const QString &eyesCascade);
+  FaceDetector();
 
   bool isValid() const { return valid; }
   QList<FacePtr> detect(const MatPtr image);

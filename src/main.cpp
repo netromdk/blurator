@@ -55,11 +55,7 @@ int main(int argc, char **argv) {
   }
   qDebug() << "Loaded image..";
 
-  QString binPath = QCoreApplication::applicationDirPath();
-  QString faceFile = binPath + "/../../data/lbpcascade_frontalface.xml",
-    eyesFile = binPath + "/../../data/haarcascade_eye_tree_eyeglasses.xml";
-
-  FaceDetector detector(faceFile, eyesFile);
+  FaceDetector detector;
   if (!detector.isValid()) {
     qCritical() << "Could not setup facial detector.";
     return -1;
