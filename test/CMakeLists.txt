@@ -8,6 +8,9 @@ add_library(
   ${LIBNAME}
   STATIC
 
+  Test.h
+  Test.cpp
+
   ../src/Util.h
   ../src/Util.cpp
 
