@@ -7,5 +7,5 @@ int main() {
   TestEnv env;
 
   FaceDetector detector;
-  return (detector.isValid() ? 0 : 1);
+  return (detector.isValid() ? PASS : FAIL);
 }
