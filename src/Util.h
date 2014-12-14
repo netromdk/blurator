@@ -22,6 +22,7 @@ public:
   static MatPtr imageToMat(const char *data, int len);
 
   static QRect toQRect(const cv::Rect &rect);
+  static cv::Rect toCVRect(const QRect &rect);
 
   static void drawFaces(QImage &image, const QList<FacePtr> &faces);
 

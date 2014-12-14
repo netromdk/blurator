@@ -31,6 +31,12 @@ add_blurator_test(
   )
 
 add_blurator_test(
+  TestRectConversion
+  ${LIBNAME}
+  TestRectConversion.cpp
+  )
+
+add_blurator_test(
   TestFaceDetectorValid
   ${LIBNAME}
   TestFaceDetectorValid.cpp

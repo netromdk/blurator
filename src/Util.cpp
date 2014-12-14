@@ -50,6 +50,10 @@ QRect Util::toQRect(const cv::Rect &rect) {
   return QRect(rect.x, rect.y, rect.width, rect.height);
 }
 
+cv::Rect Util::toCVRect(const QRect &rect) {
+  return cv::Rect(rect.x(), rect.y(), rect.width(), rect.height());
+}
+
 void Util::drawFaces(QImage &image, const QList<FacePtr> &faces) {
   QPainter painter;
   painter.begin(&image);
