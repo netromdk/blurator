@@ -22,7 +22,19 @@ To compile the source code and link the binaries do the following:
 
 This produces the release version binary in the *bin* folder: blurator
 
-For debugging purposes swap out the `cmake ..` command with `cmake -DCMAKE_BUILD_TYPE=Debug ..`.
+For debugging purposes swap out the `cmake ..` command with `cmake
+-DCMAKE_BUILD_TYPE=Debug ..`.
+
+Testing
+=======
+
+In order to run our test suite you must do the following:
+
+1. `cmake -DENABLE_TESTING=YES ..`
+2. `make`
+3. `make test`
+
+It will run all tests and show the results.
 
 Usage
 =====
