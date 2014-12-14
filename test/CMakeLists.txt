@@ -29,3 +29,9 @@ add_blurator_test(
   ${LIBNAME}
   TestFaceDetectorValid.cpp
   )
+
+add_blurator_test(
+  TestFaceDetectorEmptyImage
+  ${LIBNAME}
+  TestFaceDetectorEmptyImage.cpp
+  )
