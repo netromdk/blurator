@@ -10,6 +10,7 @@ int main() {
 
   FaceDetector detector;
   if (!detector.isValid()) {
+    qCritical() << "Detector is not valid!";
     return FAIL;
   }
 
