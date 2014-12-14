@@ -1,3 +1,4 @@
+#include <QFile>
 #include <QDebug>
 
 #include <vector>
@@ -6,15 +7,39 @@
 
 B_BEGIN_NAMESPACE
 
-FaceDetector::FaceDetector(const QString &faceCascade,
-                           const QString &eyesCascade) {
+FaceDetector::FaceDetector() {
   valid = true;
-  if (!faceCas.load(faceCascade.toStdString())) {
-    qCritical() << "Could not load facial cascade!";
+
+  // Read data from Qt resources.
+  try {
+    QFile file(":res/face.xml");
+    file.open(QIODevice::ReadOnly);
+    QString data = file.readAll();
+    cv::FileStorage fs(data.toStdString(),
+                       cv::FileStorage::READ | cv::FileStorage::MEMORY);
+    if (!faceCas.read(fs.getFirstTopLevelNode())) {
+      qCritical() << "Could not load facial cascade!";
+      valid = false;
+    }
+  }
+  catch (...) {
+    qCritical() << "Invalid face cascade!";
     valid = false;
   }
-  if (!eyesCas.load(eyesCascade.toStdString())) {
-    qCritical() << "Could not load eyes cascade!";
+
+  try {
+    QFile file(":res/eyes.xml");
+    file.open(QIODevice::ReadOnly);
+    QString data = file.readAll();
+    cv::FileStorage fs(data.toStdString(),
+                       cv::FileStorage::READ | cv::FileStorage::MEMORY);
+    if (!eyesCas.read(fs.getFirstTopLevelNode())) {
+      qCritical() << "Could not load eyes cascade!";
+      valid = false;
+    }
+  }
+  catch (...) {
+    qCritical() << "Invalid eyes cascade!";
     valid = false;
   }
 }
