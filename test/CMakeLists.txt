@@ -25,6 +25,12 @@ set_blurator_links(${LIBNAME})
 
 # Add test cases.
 add_blurator_test(
+  TestImageConversion
+  ${LIBNAME}
+  TestImageConversion.cpp
+  )
+
+add_blurator_test(
   TestFaceDetectorValid
   ${LIBNAME}
   TestFaceDetectorValid.cpp
