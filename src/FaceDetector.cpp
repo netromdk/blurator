@@ -14,8 +14,8 @@ FaceDetector::FaceDetector() {
   // Read data from Qt resources.
   try {
     auto fs = Util::fileToFileStorage(":res/face.xml");
-    if (fs && !faceCas.read(fs->getFirstTopLevelNode())) {
-      qCritical() << "Could not load facial cascade!";
+    if (!fs || !faceCas.read(fs->getFirstTopLevelNode())) {
+      qCritical() << "Could not read faces data.";
       valid = false;
     }
   }
@@ -26,8 +26,8 @@ FaceDetector::FaceDetector() {
 
   try {
     auto fs = Util::fileToFileStorage(":res/eyes.xml");
-    if (fs && !eyesCas.read(fs->getFirstTopLevelNode())) {
-      qCritical() << "Could not load eyes cascade!";
+    if (!fs || !eyesCas.read(fs->getFirstTopLevelNode())) {
+      qCritical() << "Could not read eyes data.";
       valid = false;
     }
   }
