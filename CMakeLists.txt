@@ -34,13 +34,19 @@ include(target)
 
 add_subdirectory(src)
 
-include(testing)
-enable_testing()
-add_subdirectory(test)
+if (NOT ENABLE_TESTING)
+  set(ENABLE_TESTING "NO")
+endif()
 
+if (${ENABLE_TESTING} MATCHES "YES")
+  include(testing)
+  enable_testing()
+  add_subdirectory(test)
+endif()
 
 message(STATUS "--------------------------------------------------")
 message(STATUS "BUILD: ${CMAKE_BUILD_TYPE}")
 message(STATUS "VERSION: ${VERSION_NUMBER}")
+message(STATUS "Building tests: ${ENABLE_TESTING}")
 message(STATUS "Using C++11 features")
 message(STATUS "--------------------------------------------------")
