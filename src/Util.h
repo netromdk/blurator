@@ -24,6 +24,12 @@ public:
   static QRect toQRect(const cv::Rect &rect);
 
   static void drawFaces(QImage &image, const QList<FacePtr> &faces);
+
+  /**
+   * Reads data from path and loads into a cv::FileStorage. Most
+   * suitable for in-memory Qt resource files.
+   */
+  static FSPtr fileToFileStorage(const QString &path);
 };
 
 B_END_NAMESPACE

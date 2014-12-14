@@ -10,6 +10,7 @@
 B_BEGIN_NAMESPACE
 
 typedef std::shared_ptr<cv::Mat> MatPtr;
+typedef std::shared_ptr<cv::FileStorage> FSPtr;
 
 B_END_NAMESPACE
 

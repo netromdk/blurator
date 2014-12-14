@@ -69,4 +69,16 @@ void Util::drawFaces(QImage &image, const QList<FacePtr> &faces) {
   painter.end();
 }
 
+FSPtr Util::fileToFileStorage(const QString &path) {
+  QFile file(path);
+  if (!file.open(QIODevice::ReadOnly)) {
+    return NULL;
+  }
+  QString data = file.readAll();
+  auto fs =
+    new cv::FileStorage(data.toStdString(),
+                        cv::FileStorage::READ | cv::FileStorage::MEMORY);
+  return FSPtr(fs);
+}
+
 B_END_NAMESPACE
