@@ -8,7 +8,8 @@ if (NOT WIN32)
     "/usr/local/Qt-5.3.2")
 endif()
 
-set(CMAKE_AUTOMOC ON) # Moc when necessary.
+set(CMAKE_AUTOMOC ON) # moc when necessary.
+set(CMAKE_AUTORCC ON) # rcc when necessary.
 
 # As moc files are generated in the binary dir, tell CMake to always
 # look for includes there:

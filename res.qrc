@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource>
+    <file alias="res/face.xml">res/lbpcascade_frontalface.xml</file>
+    <file alias="res/eyes.xml">res/haarcascade_eye_tree_eyeglasses.xml</file>
+  </qresource>
+</RCC>

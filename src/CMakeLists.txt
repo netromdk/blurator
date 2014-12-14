@@ -10,6 +10,8 @@ add_executable(
 
   FaceDetector.h
   FaceDetector.cpp
+
+  ../res.qrc
   )
 
 qt5_use_modules(
