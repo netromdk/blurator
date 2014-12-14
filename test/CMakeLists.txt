@@ -1,12 +1,10 @@
-include(testing)
-
 # Static library for test cases.
 include_directories(../src)
 
 set(LIBNAME "testlib")
 add_library(
   ${LIBNAME}
-  STATIC
+  SHARED
 
   Test.h
   Test.cpp

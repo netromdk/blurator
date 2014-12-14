@@ -34,6 +34,7 @@ include(target)
 
 add_subdirectory(src)
 
+include(testing)
 enable_testing()
 add_subdirectory(test)
 
