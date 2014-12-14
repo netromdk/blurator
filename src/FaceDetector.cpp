@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "Util.h"
 #include "FaceDetector.h"
 
 B_BEGIN_NAMESPACE
@@ -12,12 +13,8 @@ FaceDetector::FaceDetector() {
 
   // Read data from Qt resources.
   try {
-    QFile file(":res/face.xml");
-    file.open(QIODevice::ReadOnly);
-    QString data = file.readAll();
-    cv::FileStorage fs(data.toStdString(),
-                       cv::FileStorage::READ | cv::FileStorage::MEMORY);
-    if (!faceCas.read(fs.getFirstTopLevelNode())) {
+    auto fs = Util::fileToFileStorage(":res/face.xml");
+    if (fs && !faceCas.read(fs->getFirstTopLevelNode())) {
       qCritical() << "Could not load facial cascade!";
       valid = false;
     }
@@ -28,12 +25,8 @@ FaceDetector::FaceDetector() {
   }
 
   try {
-    QFile file(":res/eyes.xml");
-    file.open(QIODevice::ReadOnly);
-    QString data = file.readAll();
-    cv::FileStorage fs(data.toStdString(),
-                       cv::FileStorage::READ | cv::FileStorage::MEMORY);
-    if (!eyesCas.read(fs.getFirstTopLevelNode())) {
+    auto fs = Util::fileToFileStorage(":res/eyes.xml");
+    if (fs && !eyesCas.read(fs->getFirstTopLevelNode())) {
       qCritical() << "Could not load eyes cascade!";
       valid = false;
     }
