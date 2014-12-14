@@ -34,6 +34,10 @@ include(target)
 
 add_subdirectory(src)
 
+enable_testing()
+add_subdirectory(test)
+
+
 message(STATUS "--------------------------------------------------")
 message(STATUS "BUILD: ${CMAKE_BUILD_TYPE}")
 message(STATUS "VERSION: ${VERSION_NUMBER}")
