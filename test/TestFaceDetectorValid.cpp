@@ -1,8 +1,10 @@
+#include "Test.h"
+
 #include "FaceDetector.h"
 B_USE_NAMESPACE
 
 int main() {
-  Q_INIT_RESOURCE(res);
+  TestEnv env;
 
   FaceDetector detector;
   return (detector.isValid() ? 0 : 1);
