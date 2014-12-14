@@ -38,6 +38,11 @@ FaceDetector::FaceDetector() {
 }
 
 QList<FacePtr> FaceDetector::detect(const MatPtr image) {
+  QList<FacePtr> results;
+  if (!image) {
+    return results;
+  }
+
   // Make grayscaled version of the image, and equalize the histogram
   // which normalizes the brightness and increases the contrast in the
   // image.
@@ -50,7 +55,6 @@ QList<FacePtr> FaceDetector::detect(const MatPtr image) {
   std::vector<cv::Rect> faces;
   faceCas.detectMultiScale(grayImg, faces, 1.1, 3, 0, cv::Size(80, 80));
 
-  QList<FacePtr> results;
   for (auto it = faces.begin(); it != faces.end(); ++it) {
     const auto &f = *it;
     auto face = FacePtr(new Face);
