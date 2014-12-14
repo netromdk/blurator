@@ -1,40 +1,42 @@
+include(testing)
+
+# Static library for test cases.
 include_directories(../src)
 
+set(LIBNAME "testlib")
 add_library(
-  testlib
+  ${LIBNAME}
   STATIC
 
-  ../src/FaceDetector.cpp
-  ../src/Face.cpp
+  ../src/Util.h
   ../src/Util.cpp
+
+  ../src/Face.h
+  ../src/Face.cpp
+
+  ../src/FaceDetector.h
+  ../src/FaceDetector.cpp
+
+  ../res.qrc
   )
 
 qt5_use_modules(
-  testlib
+  ${LIBNAME}
   Core
   Gui
   )
 
 target_link_libraries(
-  testlib
+  ${LIBNAME}
   opencv_core
   opencv_highgui
   opencv_objdetect
   opencv_imgproc
   )
 
-set(NAME "TestFaceDetector")
-add_executable(
-  ${NAME}
-  TestFaceDetector.cpp
-  )
-
-target_link_libraries(
-  ${NAME}
-  testlib
-  )
-
-add_test(
-  NAME TestFaceDetector
-  COMMAND ${NAME}
+# Add test cases.
+add_blurator_test(
+  TestFaceDetectorValid
+  ${LIBNAME}
+  TestFaceDetectorValid.cpp
   )
