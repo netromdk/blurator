@@ -14,16 +14,4 @@ add_executable(
   ../res.qrc
   )
 
-qt5_use_modules(
-  ${PROJECT_NAME}
-  Core
-  Gui
-  )
-
-target_link_libraries(
-  ${PROJECT_NAME}
-  opencv_core
-  opencv_highgui
-  opencv_objdetect
-  opencv_imgproc
-  )
+set_blurator_links(${PROJECT_NAME})

@@ -21,19 +21,7 @@ add_library(
   ../res.qrc
   )
 
-qt5_use_modules(
-  ${LIBNAME}
-  Core
-  Gui
-  )
-
-target_link_libraries(
-  ${LIBNAME}
-  opencv_core
-  opencv_highgui
-  opencv_objdetect
-  opencv_imgproc
-  )
+set_blurator_links(${LIBNAME})
 
 # Add test cases.
 add_blurator_test(
