@@ -37,6 +37,12 @@ add_blurator_test(
   )
 
 add_blurator_test(
+  TestFace
+  ${LIBNAME}
+  TestFace.cpp
+  )
+
+add_blurator_test(
   TestFaceDetectorValid
   ${LIBNAME}
   TestFaceDetectorValid.cpp
