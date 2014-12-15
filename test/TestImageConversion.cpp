@@ -18,8 +18,9 @@ int main() {
     return FAIL;
   }
 
-  if (mat->channels() != 3) {
-    qCritical() << "mat must have three channels, has:" << mat->channels();
+  int channels = mat->channels();
+  if (channels != 3) {
+    qCritical() << "mat must have three channels, has:" << channels;
     return FAIL;
   }
 
@@ -27,7 +28,19 @@ int main() {
   if (mat->total() != size) {
     qCritical() << "mat size must be:" << size << ", but is:" << mat->total();
     return FAIL;
-  }  
-  
+  }
+
+  // Check all pixels are red.
+  for (int y = 0; y < image.height(); y++) {
+    for (int x = 0; x < image.width(); x++) {
+      auto pixels = mat->at<cv::Vec3b>(y, x); // In BGR format.
+      if (pixels[2] != 255 && pixels[1] != 0 && pixels[0] != 0) {
+        qCritical() << "mat pixel (" << x << "," << y
+                    << ") is not (255, 0, 0) RGB!";
+        return FAIL;
+      }
+    }
+  }
+
   return PASS;
 }
