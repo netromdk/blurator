@@ -1,5 +1,3 @@
-#include <QImage>
-
 #include "Test.h"
 
 #include "FaceDetector.h"
