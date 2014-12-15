@@ -4,7 +4,7 @@ include_directories(../src)
 set(LIBNAME "testlib")
 add_library(
   ${LIBNAME}
-  SHARED
+  STATIC
 
   Test.h
   Test.cpp
