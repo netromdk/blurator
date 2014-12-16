@@ -1,3 +1,4 @@
+// Copyright (c) Burator 2014-2015
 #include <QFile>
 #include <QImage>
 #include <QDebug>
@@ -10,14 +11,19 @@
 #include "Util.h"
 #include "Types.h"
 #include "Global.h"
+#include "ArgParser.h"
 #include "Version.h"
 #include "FaceDetector.h"
+
 B_USE_NAMESPACE
 
 int main(int argc, char **argv) {
 	QCoreApplication app(argc, argv);
 	QCoreApplication::setApplicationName("Blurator");
 	QCoreApplication::setApplicationVersion(versionString());
+
+  ArgParser parse;
+  parse.showParser();
 
   QCommandLineParser parser;
   parser.setApplicationDescription("Blur license plates and faces");

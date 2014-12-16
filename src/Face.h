@@ -1,3 +1,4 @@
+// Copyright (c) Burator 2014-2015
 #ifndef B_FACE_H
 #define B_FACE_H
 

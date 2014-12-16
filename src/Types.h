@@ -1,3 +1,4 @@
+// Copyright (c) Burator 2014-2015
 #ifndef B_TYPES_H
 #define B_TYPES_H
 
