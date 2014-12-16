@@ -34,10 +34,12 @@ int main() {
   for (int y = 0; y < image.height(); y++) {
     for (int x = 0; x < image.width(); x++) {
       auto pixels = mat->at<cv::Vec4b>(y, x); // In BGRA format.
-      if (pixels[2] != 255 && pixels[1] != 0 && pixels[0] != 0) {
-        qDebug() << pixels[0] << pixels[1] << pixels[2] << pixels[3];
+      if (pixels[3] != 126 && pixels[2] != 255 && pixels[1] != 0 &&
+          pixels[0] != 0) {
         qCritical() << "mat pixel (" << x << "," << y
-                    << ") is not (255, 0, 0) RGB!";
+                    << ") is not (255, 0, 0, 126) RGBA!";
+        qCritical() << "but:" << pixels[0] << pixels[1] << pixels[2]
+                    << pixels[3];
         return FAIL;
       }
     }
