@@ -1,3 +1,4 @@
+// Copyright (c) Burator 2014-2015
 #include "Face.h"
 #include "Global.h"
 

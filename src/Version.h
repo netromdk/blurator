@@ -1,3 +1,4 @@
+// Copyright (c) Burator 2014-2015
 #ifndef B_VERSION_H
 #define B_VERSION_H
 
