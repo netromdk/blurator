@@ -12,12 +12,12 @@
 
 B_BEGIN_NAMESPACE
 
-MatPtr Util::imageToMat(const QString &file) {
+MatPtr Util::imageToMat(const QString &file, bool loadAlpha) {
   QFile f(file);
   if (!f.open(QIODevice::ReadOnly)) {
     return nullptr;
   }
-  return imageToMat(f.readAll());
+  return imageToMat(f.readAll(), loadAlpha);
 }
 
 MatPtr Util::imageToMat(const QImage &image, const char *fmt) {
@@ -25,14 +25,14 @@ MatPtr Util::imageToMat(const QImage &image, const char *fmt) {
   QBuffer buf(&arr);
   buf.open(QIODevice::WriteOnly);
   image.save(&buf, fmt);
-  return imageToMat(arr);
+  return imageToMat(arr, image.hasAlphaChannel());
 }
 
-MatPtr Util::imageToMat(const QByteArray &data) {
-  return imageToMat(data.constData(), data.size());
+MatPtr Util::imageToMat(const QByteArray &data, bool loadAlpha) {
+  return imageToMat(data.constData(), data.size(), loadAlpha);
 }
 
-MatPtr Util::imageToMat(const char *data, int len) {
+MatPtr Util::imageToMat(const char *data, int len, bool loadAlpha) {
   if (!data || len <= 0) {
     return nullptr;
   }
@@ -42,8 +42,10 @@ MatPtr Util::imageToMat(const char *data, int len) {
     return nullptr;
   }
 
+  // If the flag value is <0 then it will load the image with alpha
+  // channel. If it is >0 then it will load as 3-channel image.
   auto mat = MatPtr(new cv::Mat);
-  imdecode(cv::Mat(vec), CV_LOAD_IMAGE_COLOR, mat.get());
+  imdecode(cv::Mat(vec), CV_LOAD_IMAGE_COLOR * (loadAlpha ? -1 : 1), mat.get());
   return mat;
 }
 

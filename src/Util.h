@@ -17,10 +17,10 @@ B_BEGIN_NAMESPACE
 
 class Util {
 public:
-  static MatPtr imageToMat(const QString &file);
+  static MatPtr imageToMat(const QString &file, bool loadAlpha = false);
   static MatPtr imageToMat(const QImage &image, const char *fmt = "PNG");
-  static MatPtr imageToMat(const QByteArray &data);
-  static MatPtr imageToMat(const char *data, int len);
+  static MatPtr imageToMat(const QByteArray &data, bool loadAlpha = false);
+  static MatPtr imageToMat(const char *data, int len, bool loadAlpha = false);
 
   static QRect toQRect(const cv::Rect &rect);
   static cv::Rect toCVRect(const QRect &rect);
