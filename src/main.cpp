@@ -11,7 +11,6 @@
 #include "Util.h"
 #include "Types.h"
 #include "Global.h"
-#include "ArgParser.h"
 #include "Version.h"
 #include "FaceDetector.h"
 
@@ -22,18 +21,21 @@ int main(int argc, char **argv) {
 	QCoreApplication::setApplicationName("Blurator");
 	QCoreApplication::setApplicationVersion(versionString());
 
-  ArgParser parse;
-  parse.showParser();
-
   QCommandLineParser parser;
   parser.setApplicationDescription("Blur license plates and faces");
   parser.addHelpOption();
   parser.addVersionOption();
   parser.addPositionalArgument("path", QCoreApplication::translate("main",
   	                        "Path to images or image"));
+  QCommandLineOption detectFaces(QStringList() << "f" << "faces",
+          QCoreApplication::translate("main", "Detect faces"));
 
+  parser.addOption(detectFaces);
   parser.process(app);
   const QStringList args = parser.positionalArguments();
+
+  bool dFaces = parser.isSet(detectFaces);
+  qDebug() << dFaces;
 
   // ensure the arguments are passed
   if (args.isEmpty()) {
