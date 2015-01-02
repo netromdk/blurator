@@ -11,8 +11,6 @@ add_executable(
   FaceDetector.h
   FaceDetector.cpp
 
-  ArgParser.h
-  ArgParser.cpp
   ../res.qrc
   )
 
