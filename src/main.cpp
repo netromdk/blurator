@@ -37,12 +37,18 @@ int main(int argc, char **argv) {
           QCoreApplication::translate("main", "Detect license plates"));
   parser.addOption(detectPlates);
   
+  // No-backup file option
+  QCommandLineOption noBackupFile(QStringList() << "no-backup",
+          QCoreApplication::translate("main", "Don't store a backup of the original image"));
+  parser.addOption(noBackupFile);
+
   parser.process(app);
   const QStringList args = parser.positionalArguments();
 
   // Check optional command line options
   bool dFaces = parser.isSet(detectFaces);
   bool dPlates = parser.isSet(detectPlates);
+  bool noBackup = parser.isSet(noBackupFile);
 
   // ensure the arguments are passed
   if (args.isEmpty()) {
@@ -51,8 +57,13 @@ int main(int argc, char **argv) {
   } 
   QString path = args.at(0);
 
+  /* Place holder */
+  if (noBackup) {
+    qDebug() << "Warning no backup file created!";
+  } else {
+    qDebug() << "Creating backup file!";
+  }
 
-  /* testing */
   if (dFaces) {
     QFile f(path);
     if (!f.open(QIODevice::ReadOnly)) {
@@ -99,7 +110,9 @@ int main(int argc, char **argv) {
         qCritical() << "Could not save overlays";
       }
     }
-  } 
+  }
+
+  // TODO: Plate detection
   if(dPlates) {
     qCritical() << "Plate detection not implemented yet!";
     return -1;
