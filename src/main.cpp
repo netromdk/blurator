@@ -123,7 +123,10 @@ int main(int argc, char **argv) {
         }
         else {
           qWarning() << "Could not save backup to" << bpath;
-          // TODO: Ask to abort
+          if (!Util::askProceed("Do you want to proceed?")) {
+            qWarning() << "Aborting..";
+            return -1;
+          }
         }
       }
 
