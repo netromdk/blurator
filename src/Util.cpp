@@ -110,4 +110,15 @@ bool Util::askProceed(const QString &msg, bool *override) {
   return false;
 }
 
+QString Util::getBackupPath(const QString &path) {
+  for (int num = 1;; num++) {
+    QString bpath =
+      QString("%1.bak%2").arg(path).arg(num > 1 ? QString::number(num) : "");
+    if (!QFile::exists(bpath)) {
+      return bpath;
+    }
+  }
+  return QString();
+}
+
 B_END_NAMESPACE

@@ -42,6 +42,12 @@ public:
    * the message.
    */
   static bool askProceed(const QString &msg, bool *override = nullptr);
+
+  /**
+   * Return path with .bak appended and if any backup file already
+   * exists then it will be .bak2, .bak3 etc. instead.
+   */
+  static QString getBackupPath(const QString &path);
 };
 
 B_END_NAMESPACE

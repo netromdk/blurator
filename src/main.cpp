@@ -143,7 +143,7 @@ int main(int argc, char **argv) {
 
       // Save original to backup file.
       if (!noBackup) {
-        QString bpath = path + ".bak";
+        QString bpath = Util::getBackupPath(path);
         if (QFile::copy(path, bpath)) {
           qDebug() << "Saved backup to" << bpath;
         }
