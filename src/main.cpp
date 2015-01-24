@@ -16,10 +16,21 @@
 
 B_USE_NAMESPACE
 
+// Show console output.
+static const bool showOutput = true;
+
+// Show debug/info output.
+static const bool showDebug = true;
+
+static void msgHandler(QtMsgType type, const QMessageLogContext &ctx,
+                       const QString &msg);
+
 int main(int argc, char **argv) {
 	QCoreApplication app(argc, argv);
 	QCoreApplication::setApplicationName("Blurator");
 	QCoreApplication::setApplicationVersion(versionString());
+
+  qInstallMessageHandler(msgHandler);
 
   QCommandLineParser parser;
   parser.setApplicationDescription("Blur license plates and faces.");
@@ -132,4 +143,35 @@ int main(int argc, char **argv) {
   } 
 
   return 0;
+}
+
+static void msgHandler(QtMsgType type, const QMessageLogContext &ctx,
+                       const QString &msg) {
+  if (!showOutput) return;
+
+  QTextStream stream(stdout);
+
+  switch (type) {
+  case QtDebugMsg:
+    if (showDebug) {
+      if (QString(msg) == "") {
+        stream << endl;
+        return;
+      }
+      stream << "(I) " << msg << endl;
+    }
+    break;
+
+  case QtWarningMsg:
+    stream << "(W) " << msg << endl;
+    break;
+
+  case QtCriticalMsg:
+    stream << "(E) " << msg << endl;
+    break;
+
+  case QtFatalMsg:
+    stream << "(F) " << msg << endl;
+    abort();
+  }
 }
