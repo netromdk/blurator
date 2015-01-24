@@ -22,23 +22,23 @@ int main(int argc, char **argv) {
 	QCoreApplication::setApplicationVersion(versionString());
 
   QCommandLineParser parser;
-  parser.setApplicationDescription("Blur license plates and faces");
+  parser.setApplicationDescription("Blur license plates and faces.");
   parser.addHelpOption();
   parser.addVersionOption();
-  parser.addPositionalArgument("path", "Path to images or image");
+  parser.addPositionalArgument("path", "Path to images or image.");
   // Face detection option
   QCommandLineOption detectFaces(QStringList() << "f" << "faces",
-                                 "Detect faces");
+                                 "Detect faces.");
   parser.addOption(detectFaces);
 
   // License plate detection option
   QCommandLineOption detectPlates(QStringList() << "p" << "plates",
-                                  "Detect license plates");
+                                  "Detect license plates.");
   parser.addOption(detectPlates);
   
   // No-backup file option
   QCommandLineOption noBackupFile(QStringList() << "no-backup",
-                                 "Don't store a backup of the original image");
+                                 "Don't store a backup of the original image.");
   parser.addOption(noBackupFile);
 
   parser.process(app);
@@ -61,12 +61,8 @@ int main(int argc, char **argv) {
     return -1;
   }
 
-  /* Place holder */
   if (noBackup) {
-    qWarning() << "Warning no backup file created!";
-  }
-  else {
-    qDebug() << "Creating backup file!";
+    qWarning() << "Warning no backup file will be created!";
   }
 
   if (dFaces) {
@@ -107,9 +103,21 @@ int main(int argc, char **argv) {
     if (!faces.isEmpty()) {
       QImage overlay = QImage::fromData(imageData);
       Util::drawFaces(overlay, faces);
-      QString overlayFile = path + ".overlay.png";
-      if (overlay.save(overlayFile)) {
-        qDebug() << "Saved overlays to:" << overlayFile;
+
+      // Save original to backup file.
+      if (!noBackup) {
+        QString bpath = path + ".bak";
+        if (QFile::copy(path, bpath)) {
+          qDebug() << "Saved backup to" << bpath;
+        }
+        else {
+          qWarning() << "Could not save backup to" << bpath;
+          // TODO: Ask to abort
+        }
+      }
+
+      if (overlay.save(path)) {
+        qDebug() << "Saved face overlays to" << path;
       }
       else {
         qCritical() << "Could not save overlays";
