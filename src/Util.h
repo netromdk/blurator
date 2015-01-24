@@ -32,6 +32,13 @@ public:
    * suitable for in-memory Qt resource files.
    */
   static FSPtr fileToFileStorage(const QString &path);
+
+  /**
+   * Show console prompt asking to proceed or not and it accepts "y",
+   * "yes", "n", or "no" as reply. It returns false if anything else
+   * is typed.
+   */
+  static bool askProceed(const QString &msg);
 };
 
 B_END_NAMESPACE

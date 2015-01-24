@@ -7,6 +7,8 @@
 #include <QByteArray>
 
 #include <vector>
+#include <string>
+#include <iostream>
 
 #include "Util.h"
 
@@ -86,6 +88,20 @@ FSPtr Util::fileToFileStorage(const QString &path) {
     new cv::FileStorage(data.toStdString(),
                         cv::FileStorage::READ | cv::FileStorage::MEMORY);
   return FSPtr(fs);
+}
+
+bool Util::askProceed(const QString &msg) {
+  using namespace std;
+  cout << msg.toStdString() << " [y/N] ";
+  cout.flush();
+  string _r;
+  cin >> _r;
+  QString reply(_r.c_str());
+  reply = reply.toLower().trimmed();
+  if (reply == "y" || reply == "yes") {
+    return true;
+  }
+  return false;
 }
 
 B_END_NAMESPACE
