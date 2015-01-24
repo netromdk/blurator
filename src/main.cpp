@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
   parser.addHelpOption();
   parser.addVersionOption();
   parser.addPositionalArgument("path", "Path to images or image.");
+
   // Face detection option
   QCommandLineOption detectFaces(QStringList() << "f" << "faces",
                                  "Detect faces.");
@@ -46,6 +47,16 @@ int main(int argc, char **argv) {
   QCommandLineOption detectPlates(QStringList() << "p" << "plates",
                                   "Detect license plates.");
   parser.addOption(detectPlates);
+
+  // Reply "yes" to everything option
+  QCommandLineOption replyYes(QStringList() << "y" << "yes",
+                              "Automatically reply \"yes\" to all questions.");
+  parser.addOption(replyYes);
+
+  // Reply "no" to everything option
+  QCommandLineOption replyNo(QStringList() << "n" << "no",
+                             "Automatically reply \"no\" to all questions.");
+  parser.addOption(replyNo);
   
   // No-backup file option
   QCommandLineOption noBackupFile(QStringList() << "no-backup",
@@ -58,6 +69,8 @@ int main(int argc, char **argv) {
   // Check optional command line options
   bool dFaces = parser.isSet(detectFaces);
   bool dPlates = parser.isSet(detectPlates);
+  bool rYes = parser.isSet(replyYes);
+  bool rNo = parser.isSet(replyNo);
   bool noBackup = parser.isSet(noBackupFile);
 
   // ensure the arguments are passed
@@ -70,6 +83,19 @@ int main(int argc, char **argv) {
   if (!dPlates && !dFaces) {
     qCritical() << "Must choose to detect plates and/or faces!";
     return -1;
+  }
+
+  if (rYes && rNo) {
+    qCritical() << "Can't both say yes and no to everything!";
+    return -1;
+  }
+
+  // If non-null then the boolean value means reply "yes" for true and
+  // "no" for false.
+  BoolPtr autoReplyYes(nullptr);
+  if (rYes || rNo) {
+    autoReplyYes.reset(new bool);
+    *autoReplyYes = rYes;
   }
 
   if (noBackup) {
@@ -123,7 +149,7 @@ int main(int argc, char **argv) {
         }
         else {
           qWarning() << "Could not save backup to" << bpath;
-          if (!Util::askProceed("Do you want to proceed?")) {
+          if (!Util::askProceed("Do you want to proceed?", autoReplyYes.get())) {
             qWarning() << "Aborting..";
             return -1;
           }

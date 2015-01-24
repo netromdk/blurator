@@ -90,10 +90,16 @@ FSPtr Util::fileToFileStorage(const QString &path) {
   return FSPtr(fs);
 }
 
-bool Util::askProceed(const QString &msg) {
+bool Util::askProceed(const QString &msg, bool *override) {
   using namespace std;
   cout << msg.toStdString() << " [y/N] ";
   cout.flush();
+
+  if (override) {
+    cout << (*override ? "yes" : "no") << endl;
+    return *override;
+  }
+
   string _r;
   cin >> _r;
   QString reply(_r.c_str());
