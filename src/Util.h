@@ -37,8 +37,11 @@ public:
    * Show console prompt asking to proceed or not and it accepts "y",
    * "yes", "n", or "no" as reply. It returns false if anything else
    * is typed.
+   *
+   * If override is set then that will be the answer after outputting
+   * the message.
    */
-  static bool askProceed(const QString &msg);
+  static bool askProceed(const QString &msg, bool *override = nullptr);
 };
 
 B_END_NAMESPACE
