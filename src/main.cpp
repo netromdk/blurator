@@ -25,21 +25,20 @@ int main(int argc, char **argv) {
   parser.setApplicationDescription("Blur license plates and faces");
   parser.addHelpOption();
   parser.addVersionOption();
-  parser.addPositionalArgument("path", QCoreApplication::translate("main",
-  	                        "Path to images or image"));
+  parser.addPositionalArgument("path", "Path to images or image");
   // Face detection option
   QCommandLineOption detectFaces(QStringList() << "f" << "faces",
-          QCoreApplication::translate("main", "Detect faces"));
+                                 "Detect faces");
   parser.addOption(detectFaces);
 
   // License plate detection option
   QCommandLineOption detectPlates(QStringList() << "p" << "plates",
-          QCoreApplication::translate("main", "Detect license plates"));
+                                  "Detect license plates");
   parser.addOption(detectPlates);
   
   // No-backup file option
   QCommandLineOption noBackupFile(QStringList() << "no-backup",
-          QCoreApplication::translate("main", "Don't store a backup of the original image"));
+                                 "Don't store a backup of the original image");
   parser.addOption(noBackupFile);
 
   parser.process(app);
@@ -57,10 +56,16 @@ int main(int argc, char **argv) {
   } 
   QString path = args.at(0);
 
+  if (!dPlates && !dFaces) {
+    qCritical() << "Must choose to detect plates and/or faces!";
+    return -1;
+  }
+
   /* Place holder */
   if (noBackup) {
-    qDebug() << "Warning no backup file created!";
-  } else {
+    qWarning() << "Warning no backup file created!";
+  }
+  else {
     qDebug() << "Creating backup file!";
   }
 
@@ -113,14 +118,10 @@ int main(int argc, char **argv) {
   }
 
   // TODO: Plate detection
-  if(dPlates) {
+  if (dPlates) {
     qCritical() << "Plate detection not implemented yet!";
     return -1;
   } 
 
-  if (!dPlates && !dFaces) {
-    qCritical() << "Nothing to do on images!";
-    return -1;
-  }
   return 0;
 }
