@@ -48,6 +48,12 @@ public:
    * exists then it will be .bak2, .bak3 etc. instead.
    */
   static QString getBackupPath(const QString &path);
+
+  /**
+   * Checks whether the extension of the file is a supported image
+   * file.
+   */
+  static bool isSupportedImage(const QString &path);
 };
 
 B_END_NAMESPACE
