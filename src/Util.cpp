@@ -4,6 +4,7 @@
 #include <QString>
 #include <QBuffer>
 #include <QPainter>
+#include <QFileInfo>
 #include <QByteArray>
 
 #include <vector>
@@ -119,6 +120,11 @@ QString Util::getBackupPath(const QString &path) {
     }
   }
   return QString();
+}
+
+bool Util::isSupportedImage(const QString &path) {
+  static const QStringList exts = QStringList{"jpg", "jpeg", "png"};
+  return exts.contains(QFileInfo(path).suffix().toLower());
 }
 
 B_END_NAMESPACE

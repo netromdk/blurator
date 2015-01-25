@@ -1,8 +1,10 @@
 // Copyright (c) Burator 2014-2015
+#include <QDir>
 #include <QFile>
 #include <QImage>
 #include <QDebug>
 #include <QString>
+#include <QFileInfo>
 #include <QByteArray>
 #include <QStringList>
 #include <QCoreApplication>
@@ -22,8 +24,8 @@ static const bool showOutput = true;
 // Show debug/info output.
 static const bool showDebug = true;
 
-static void msgHandler(QtMsgType type, const QMessageLogContext &ctx,
-                       const QString &msg);
+void msgHandler(QtMsgType type, const QMessageLogContext &ctx,
+                const QString &msg);
 
 int main(int argc, char **argv) {
 	QCoreApplication app(argc, argv);
@@ -36,7 +38,7 @@ int main(int argc, char **argv) {
   parser.setApplicationDescription("Blur license plates and faces.");
   parser.addHelpOption();
   parser.addVersionOption();
-  parser.addPositionalArgument("path", "Path to images or image.");
+  parser.addPositionalArgument("paths", "Paths to images or folders.", "paths..");
 
   // Face detection option
   QCommandLineOption detectFaces(QStringList() << "f" << "faces",
@@ -73,12 +75,37 @@ int main(int argc, char **argv) {
   bool rNo = parser.isSet(replyNo);
   bool noBackup = parser.isSet(noBackupFile);
 
-  // ensure the arguments are passed
+  // Ensure the arguments are passed.
   if (args.isEmpty()) {
-  	qCritical() << "Must provide path to images!";
+  	qCritical() << "Must provide paths to images!";
   	return -1;
-  } 
-  QString path = args.at(0);
+  }
+
+  // Find all images from the arguments. From folders we only take the
+  // top-level images.
+  QStringList images;
+  foreach (const QString &path, args) {
+    QFileInfo fi(path);
+    if (!fi.exists()) {
+      qCritical() << "File does not exist:" << path;
+      return -1;
+    }
+    if (fi.isFile() && Util::isSupportedImage(path)) {
+      images << path;
+    }
+    else if (fi.isDir()) {
+      QDir dir(path);
+      QStringList files =
+        dir.entryList(QDir::Files | QDir::NoDotAndDotDot | QDir::Readable);
+      foreach (const QString &file, files) {
+        if (Util::isSupportedImage(file)) {
+          images << dir.absoluteFilePath(file);
+        }
+      }
+    }
+  }
+
+  qDebug() << "Found:" << images;
 
   if (!dPlates && !dFaces) {
     qCritical() << "Must choose to detect plates and/or faces!";
@@ -99,83 +126,83 @@ int main(int argc, char **argv) {
   }
 
   if (noBackup) {
-    qWarning() << "Warning no backup file will be created!";
+    qWarning() << "Warning no backup files will be created!";
   }
 
-  if (dFaces) {
-    QFile f(path);
-    if (!f.open(QIODevice::ReadOnly)) {
-      qCritical() << "Could not read from image file!";
-      return -1;
-    }
-    QByteArray imageData = f.readAll();
-    f.close();
+  foreach (const QString &path, images) {
+    qDebug() << "Processing" << path;
 
-    qDebug() << "Read" << imageData.size() << "bytes";
+    if (dFaces) {
+      QFile f(path);
+      if (!f.open(QIODevice::ReadOnly)) {
+        qCritical() << "Could not read from image file!";
+        return -1;
+      }
+      QByteArray imageData = f.readAll();
+      f.close();
 
-    MatPtr image = Util::imageToMat(imageData);
-    if (image == nullptr) {
-      qCritical() << "Invalid image!";
-      return -1;
-    }
-    qDebug() << "Loaded image..";
+      MatPtr image = Util::imageToMat(imageData);
+      if (image == nullptr) {
+        qCritical() << "Invalid image!";
+        return -1;
+      }
 
-    FaceDetector detector;
-    if (!detector.isValid()) {
-      qCritical() << "Could not setup facial detector.";
-      return -1;
-    }
+      FaceDetector detector;
+      if (!detector.isValid()) {
+        qCritical() << "Could not setup facial detector.";
+        return -1;
+      }
 
-    qDebug() << "Detecting faces..";
-    QList<FacePtr> faces = detector.detect(image);
-    if (faces.isEmpty()) {
-      qDebug() << "Did not find any faces!";
-      return 0;
-    }
+      QList<FacePtr> faces = detector.detect(image);
+      if (faces.isEmpty()) {
+        qDebug() << "Did not find any faces!";
+        continue;
+      }
 
-    qDebug() << "Found" << faces.size() << "face(s).";
-    qDebug() << faces;
+      qDebug() << "Found" << faces.size() << "face(s).";
+      qDebug() << faces;
 
-    // Render face overlays to an image file to visualize the result.
-    if (!faces.isEmpty()) {
-      QImage overlay = QImage::fromData(imageData);
-      Util::drawFaces(overlay, faces);
+      // Render face overlays to an image file to visualize the result.
+      if (!faces.isEmpty()) {
+        QImage overlay = QImage::fromData(imageData);
+        Util::drawFaces(overlay, faces);
 
-      // Save original to backup file.
-      if (!noBackup) {
-        QString bpath = Util::getBackupPath(path);
-        if (QFile::copy(path, bpath)) {
-          qDebug() << "Saved backup to" << bpath;
-        }
-        else {
-          qWarning() << "Could not save backup to" << bpath;
-          if (!Util::askProceed("Do you want to proceed?", autoReplyYes.get())) {
-            qWarning() << "Aborting..";
-            return -1;
+        // Save original to backup file.
+        if (!noBackup) {
+          QString bpath = Util::getBackupPath(path);
+          if (QFile::copy(path, bpath)) {
+            qDebug() << "Saved backup to" << bpath;
+          }
+          else {
+            qWarning() << "Could not save backup to" << bpath;
+            if (!Util::askProceed("Do you want to proceed?", autoReplyYes.get())) {
+              qWarning() << "Aborting..";
+              return -1;
+            }
           }
         }
-      }
 
-      if (overlay.save(path)) {
-        qDebug() << "Saved face overlays to" << path;
-      }
-      else {
-        qCritical() << "Could not save overlays";
+        if (overlay.save(path)) {
+          qDebug() << "Saved face overlays to" << path;
+        }
+        else {
+          qCritical() << "Could not save overlays";
+        }
       }
     }
-  }
 
-  // TODO: Plate detection
-  if (dPlates) {
-    qCritical() << "Plate detection not implemented yet!";
-    return -1;
-  } 
+    // TODO: Plate detection
+    if (dPlates) {
+      qCritical() << "Plate detection not implemented yet!";
+      return -1;
+    }
+  }
 
   return 0;
 }
 
-static void msgHandler(QtMsgType type, const QMessageLogContext &ctx,
-                       const QString &msg) {
+void msgHandler(QtMsgType type, const QMessageLogContext &ctx,
+                const QString &msg) {
   if (!showOutput) return;
 
   QTextStream stream(stdout);
