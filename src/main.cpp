@@ -105,7 +105,11 @@ int main(int argc, char **argv) {
     }
   }
 
-  qDebug() << "Found:" << images;
+  if (images.isEmpty()) {
+    qCritical() << "Found no supported, existing images to process!";
+    return -1;
+  }
+  qDebug() << "Found" << images.size() << images;
 
   if (!dPlates && !dFaces) {
     qCritical() << "Must choose to detect plates and/or faces!";
