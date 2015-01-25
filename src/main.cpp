@@ -81,6 +81,24 @@ int main(int argc, char **argv) {
   	return -1;
   }
 
+  if (!dPlates && !dFaces) {
+    qCritical() << "Must choose to detect plates and/or faces!";
+    return -1;
+  }
+
+  if (rYes && rNo) {
+    qCritical() << "Can't both say yes and no to everything!";
+    return -1;
+  }
+
+  // If non-null then the boolean value means reply "yes" for true and
+  // "no" for false.
+  BoolPtr autoReplyYes(nullptr);
+  if (rYes || rNo) {
+    autoReplyYes.reset(new bool);
+    *autoReplyYes = rYes;
+  }
+
   // Find all images from the arguments. From folders we only take the
   // top-level images.
   QStringList images;
@@ -110,24 +128,6 @@ int main(int argc, char **argv) {
     return -1;
   }
   qDebug() << "Found" << images.size() << images;
-
-  if (!dPlates && !dFaces) {
-    qCritical() << "Must choose to detect plates and/or faces!";
-    return -1;
-  }
-
-  if (rYes && rNo) {
-    qCritical() << "Can't both say yes and no to everything!";
-    return -1;
-  }
-
-  // If non-null then the boolean value means reply "yes" for true and
-  // "no" for false.
-  BoolPtr autoReplyYes(nullptr);
-  if (rYes || rNo) {
-    autoReplyYes.reset(new bool);
-    *autoReplyYes = rYes;
-  }
 
   if (noBackup) {
     qWarning() << "Warning no backup files will be created!";
