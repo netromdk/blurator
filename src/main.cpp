@@ -105,7 +105,7 @@ int main(int argc, char **argv) {
   foreach (const QString &path, args) {
     QFileInfo fi(path);
     if (!fi.exists()) {
-      qWarning() << "Ignoring nonexistent file" << path;
+      qWarning() << "Ignoring nonexistent file:" << path;
       continue;
     }
 
@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
       images << path;
     }
     else if (fi.isDir()) {
-      qWarning() << "Ignoring folder" << path;
+      qWarning() << "Ignoring folder:" << path;
     }
   }
 
@@ -131,8 +131,10 @@ int main(int argc, char **argv) {
   const int size = images.size();
   for (int i = 0; i < size; i++) {
     const QString &path = images[i];
-    qDebug() <<
-      qPrintable(QString("[%1/%2] Processing %3").arg(i+1).arg(size).arg(path));
+    QString msg = QString("%1%2")
+      .arg(size > 1 ? QString("[%1/%2] ").arg(i+1).arg(size) : "")
+      .arg("Processing");
+    qDebug() << qPrintable(msg) << path;
 
     if (dFaces) {
       QFile f(path);
@@ -172,10 +174,10 @@ int main(int argc, char **argv) {
         if (!noBackup) {
           QString bpath = Util::getBackupPath(path);
           if (QFile::copy(path, bpath)) {
-            qDebug() << "Saved backup to" << bpath;
+            qDebug() << "Saved backup:" << bpath;
           }
           else {
-            qWarning() << "Could not save backup to" << bpath;
+            qWarning() << "Could not save backup:" << bpath;
             if (!Util::askProceed("Do you want to proceed?", autoReplyYes.get())) {
               qWarning() << "Aborting..";
               return -1;
@@ -184,7 +186,7 @@ int main(int argc, char **argv) {
         }
 
         if (overlay.save(path)) {
-          qDebug() << "Saved face overlays to" << path;
+          qDebug() << "Saved face overlays:" << path;
         }
         else {
           qCritical() << "Could not save overlays";
@@ -200,7 +202,10 @@ int main(int argc, char **argv) {
   }
 
   qint64 msecs = startDate.msecsTo(QDateTime::currentDateTime());
-  qDebug() << "Time elapsed" << qPrintable(Util::formatTime(msecs));
+  qDebug() << endl << "Time elapsed:" << qPrintable(Util::formatTime(msecs));
+  if (size > 1) {
+    qDebug() << "Time per image:" << qPrintable(Util::formatTime(msecs / size));
+  }
 
   return 0;
 }
