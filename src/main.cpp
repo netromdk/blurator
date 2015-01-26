@@ -4,6 +4,7 @@
 #include <QImage>
 #include <QDebug>
 #include <QString>
+#include <QDateTime>
 #include <QFileInfo>
 #include <QByteArray>
 #include <QStringList>
@@ -125,6 +126,8 @@ int main(int argc, char **argv) {
     qWarning() << "Warning no backup files will be created!";
   }
 
+  QDateTime startDate = QDateTime::currentDateTime();
+
   const int size = images.size();
   for (int i = 0; i < size; i++) {
     const QString &path = images[i];
@@ -195,6 +198,9 @@ int main(int argc, char **argv) {
       return -1;
     }
   }
+
+  qint64 msecs = startDate.msecsTo(QDateTime::currentDateTime());
+  qDebug() << "Time elapsed" << qPrintable(Util::formatTime(msecs));
 
   return 0;
 }
