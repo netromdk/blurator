@@ -11,6 +11,8 @@
 #include <QCoreApplication>
 #include <QCommandLineParser>
 
+#include <cmath>
+
 #include "Util.h"
 #include "Types.h"
 #include "Global.h"
@@ -129,10 +131,12 @@ int main(int argc, char **argv) {
   QDateTime startDate = QDateTime::currentDateTime();
 
   const int size = images.size();
+  const int fwidth = ceil(log10(size));
+  qint64 faceCnt = 0;
   for (int i = 0; i < size; i++) {
     const QString &path = images[i];
     QString msg = QString("%1%2")
-      .arg(size > 1 ? QString("[%1/%2] ").arg(i+1).arg(size) : "")
+      .arg(size > 1 ? QString("[%1/%2] ").arg(i+1, fwidth).arg(size) : "")
       .arg("Processing");
     qDebug() << qPrintable(msg) << path;
 
@@ -162,6 +166,7 @@ int main(int argc, char **argv) {
         continue;
       }
 
+      faceCnt += faces.size();
       qDebug() << "Found" << faces.size() << "face(s).";
       qDebug() << faces;
 
@@ -201,10 +206,15 @@ int main(int argc, char **argv) {
     }
   }
 
-  qint64 msecs = startDate.msecsTo(QDateTime::currentDateTime());
-  qDebug() << endl << "Time elapsed:" << qPrintable(Util::formatTime(msecs));
+  qint64 elapsed = startDate.msecsTo(QDateTime::currentDateTime());
+
+  qDebug() << endl << "Time elapsed:" << qPrintable(Util::formatTime(elapsed));
   if (size > 1) {
-    qDebug() << "Time per image:" << qPrintable(Util::formatTime(msecs / size));
+    qDebug() << "Time per image:" << qPrintable(Util::formatTime(elapsed / size));
+  }
+  qDebug() << "Faces found:" << faceCnt;
+  if (size > 1) {
+    qDebug() << "Faces per image:" << double(faceCnt) / double(size);
   }
 
   return 0;
