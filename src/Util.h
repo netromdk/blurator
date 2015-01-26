@@ -54,6 +54,11 @@ public:
    * file.
    */
   static bool isSupportedImage(const QString &path);
+
+  /**
+   * Formats a number of milliseconds in string format.
+   */
+  static QString formatTime(qint64 msecs);
 };
 
 B_END_NAMESPACE

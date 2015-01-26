@@ -127,4 +127,39 @@ bool Util::isSupportedImage(const QString &path) {
   return exts.contains(QFileInfo(path).suffix().toLower());
 }
 
+QString Util::formatTime(qint64 msecs) {
+  constexpr qint64 Second = 1000, Minute = Second * 60, Hour = Minute * 60,
+    Day = Hour * 24, Week = Day * 7;
+  QString res;
+  if (msecs >= Week) {
+    qint64 weeks = msecs / Week;
+    res += QString("%1w").arg(weeks);
+    msecs -= weeks * Week;
+  }
+  if (msecs >= Day) {
+    qint64 days = msecs / Day;
+    res += QString("%1%2d").arg(!res.isEmpty() ? " " : "").arg(days);
+    msecs -= days * Day;
+  }
+  if (msecs >= Hour) {
+    qint64 hours = msecs / Hour;
+    res += QString("%1%2h").arg(!res.isEmpty() ? " " : "").arg(hours);
+    msecs -= hours * Hour;
+  }
+  if (msecs >= Minute) {
+    qint64 minutes = msecs / Minute;
+    res += QString("%1%2m").arg(!res.isEmpty() ? " " : "").arg(minutes);
+    msecs -= minutes * Minute;
+  }
+  if (msecs >= Second) {
+    qint64 seconds = msecs / Second;
+    res += QString("%1%2s").arg(!res.isEmpty() ? " " : "").arg(seconds);
+    msecs -= seconds * Second;
+  }
+  if (msecs > 0 || res.isEmpty()) {
+    res += QString("%1%2ms").arg(!res.isEmpty() ? " " : "").arg(msecs);
+  }
+  return res;
+}
+
 B_END_NAMESPACE
