@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
   parser.setApplicationDescription("Blur license plates and faces.");
   parser.addHelpOption();
   parser.addVersionOption();
-  parser.addPositionalArgument("paths", "Paths to images or folders.", "paths..");
+  parser.addPositionalArgument("paths", "Paths to images.", "paths..");
 
   // Face detection option
   QCommandLineOption detectFaces(QStringList() << "f" << "faces",
@@ -99,35 +99,28 @@ int main(int argc, char **argv) {
     *autoReplyYes = rYes;
   }
 
-  // Find all images from the arguments. From folders we only take the
-  // top-level images.
+  // Find all images from the arguments.
   QStringList images;
   foreach (const QString &path, args) {
     QFileInfo fi(path);
     if (!fi.exists()) {
-      qCritical() << "File does not exist:" << path;
-      return -1;
+      qWarning() << "Ignoring nonexistent file" << path;
+      continue;
     }
+
     if (fi.isFile() && Util::isSupportedImage(path)) {
       images << path;
     }
     else if (fi.isDir()) {
-      QDir dir(path);
-      QStringList files =
-        dir.entryList(QDir::Files | QDir::NoDotAndDotDot | QDir::Readable);
-      foreach (const QString &file, files) {
-        if (Util::isSupportedImage(file)) {
-          images << dir.absoluteFilePath(file);
-        }
-      }
+      qWarning() << "Ignoring folder" << path;
     }
   }
 
   if (images.isEmpty()) {
-    qCritical() << "Found no supported, existing images to process!";
+    qCritical() << "Found no supported images to process!";
     return -1;
   }
-  qDebug() << "Found" << images.size() << images;
+  qDebug() << images.size() << "image files to process..";
 
   if (noBackup) {
     qWarning() << "Warning no backup files will be created!";
