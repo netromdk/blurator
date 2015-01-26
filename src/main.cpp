@@ -212,7 +212,7 @@ void msgHandler(QtMsgType type, const QMessageLogContext &ctx,
         stream << endl;
         return;
       }
-      stream << "(I) " << msg << endl;
+      stream << msg << endl;
     }
     break;
 
