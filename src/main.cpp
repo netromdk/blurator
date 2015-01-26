@@ -120,14 +120,16 @@ int main(int argc, char **argv) {
     qCritical() << "Found no supported images to process!";
     return -1;
   }
-  qDebug() << images.size() << "image files to process..";
 
   if (noBackup) {
     qWarning() << "Warning no backup files will be created!";
   }
 
-  foreach (const QString &path, images) {
-    qDebug() << "Processing" << path;
+  const int size = images.size();
+  for (int i = 0; i < size; i++) {
+    const QString &path = images[i];
+    qDebug() <<
+      qPrintable(QString("[%1/%2] Processing %3").arg(i+1).arg(size).arg(path));
 
     if (dFaces) {
       QFile f(path);
@@ -152,7 +154,6 @@ int main(int argc, char **argv) {
 
       QList<FacePtr> faces = detector.detect(image);
       if (faces.isEmpty()) {
-        qDebug() << "Did not find any faces!";
         continue;
       }
 
