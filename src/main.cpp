@@ -63,6 +63,11 @@ int main(int argc, char **argv) {
   QCommandLineOption replyNo(QStringList() << "n" << "no",
                              "Automatically reply \"no\" to all questions.");
   parser.addOption(replyNo);
+
+  // Verbosity option
+  QCommandLineOption verbosity(QStringList() << "verbose",
+                               "Shows extra information.");
+  parser.addOption(verbosity);
   
   // No-backup file option
   QCommandLineOption noBackupFile(QStringList() << "no-backup",
@@ -77,6 +82,7 @@ int main(int argc, char **argv) {
   bool dPlates = parser.isSet(detectPlates);
   bool rYes = parser.isSet(replyYes);
   bool rNo = parser.isSet(replyNo);
+  bool verbose = parser.isSet(verbosity);
   bool noBackup = parser.isSet(noBackupFile);
 
   // Ensure the arguments are passed.
@@ -207,15 +213,18 @@ int main(int argc, char **argv) {
 
     bool last = (i+1 == size);
 
-    QString line1 = QString("Processed %1: %2 faces")
-      .arg(path).arg(faceCnt);
+    QString line1;
+    if (verbose) {
+      line1 = QString("Processed %1: %2 faces").arg(path).arg(faceCnt);
+    }
 
     QString line2 = QString("[ %3/%4 (%5%) | %6 faces | %7 %8 ]")
       .arg(i+1).arg(size).arg(progress, 0, 'f', 1).arg(faceTot)
       .arg(!last ? Util::formatTime(left) : Util::formatTime(elapsed))
       .arg(!last ? "left" : "elapsed");
 
-    QString msg = QString("%1\n%2").arg(line1).arg(line2);
+    QString msg =
+      QString("%1%2").arg(verbose ? QString("%1\n").arg(line1) : "").arg(line2);
 
     // Rewind to beginning and output message. If at second line or
     // latter then overwrite everything with empty spaces to "blank"
