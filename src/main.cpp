@@ -12,6 +12,7 @@
 #include <QCommandLineParser>
 
 #include <cmath>
+#include <iostream>
 
 #include "Util.h"
 #include "Types.h"
@@ -132,13 +133,9 @@ int main(int argc, char **argv) {
 
   const int size = images.size();
   const int fwidth = ceil(log10(size));
-  qint64 faceCnt = 0;
+  qint64 faceCnt = 0, faceTot = 0;
   for (int i = 0; i < size; i++) {
     const QString &path = images[i];
-    QString msg = QString("%1%2")
-      .arg(size > 1 ? QString("[%1/%2] ").arg(i+1, fwidth).arg(size) : "")
-      .arg("Processing");
-    qDebug() << qPrintable(msg) << path;
 
     if (dFaces) {
       QFile f(path);
@@ -162,13 +159,13 @@ int main(int argc, char **argv) {
       }
 
       QList<FacePtr> faces = detector.detect(image);
+      faceCnt = faces.size();
+
       if (faces.isEmpty()) {
-        continue;
+        goto updateProgress;
       }
 
-      faceCnt += faces.size();
-      qDebug() << "Found" << faces.size() << "face(s).";
-      qDebug() << faces;
+      faceTot += faceCnt;
 
       // Render face overlays to an image file to visualize the result.
       if (!faces.isEmpty()) {
@@ -178,10 +175,7 @@ int main(int argc, char **argv) {
         // Save original to backup file.
         if (!noBackup) {
           QString bpath = Util::getBackupPath(path);
-          if (QFile::copy(path, bpath)) {
-            qDebug() << "Saved backup:" << bpath;
-          }
-          else {
+          if (!QFile::copy(path, bpath)) {
             qWarning() << "Could not save backup:" << bpath;
             if (!Util::askProceed("Do you want to proceed?", autoReplyYes.get())) {
               qWarning() << "Aborting..";
@@ -190,10 +184,7 @@ int main(int argc, char **argv) {
           }
         }
 
-        if (overlay.save(path)) {
-          qDebug() << "Saved face overlays:" << path;
-        }
-        else {
+        if (!overlay.save(path)) {
           qCritical() << "Could not save overlays";
         }
       }
@@ -204,17 +195,43 @@ int main(int argc, char **argv) {
       qCritical() << "Plate detection not implemented yet!";
       return -1;
     }
-  }
 
-  qint64 elapsed = startDate.msecsTo(QDateTime::currentDateTime());
+  updateProgress:
+    static int lastLen = 0;
 
-  qDebug() << endl << "Time elapsed:" << qPrintable(Util::formatTime(elapsed));
-  if (size > 1) {
-    qDebug() << "Time per image:" << qPrintable(Util::formatTime(elapsed / size));
-  }
-  qDebug() << "Faces found:" << faceCnt;
-  if (size > 1) {
-    qDebug() << "Faces per image:" << double(faceCnt) / double(size);
+    float progress = float(i+1) / float(size) * 100.0;
+
+    QDateTime now = QDateTime::currentDateTime();
+    qint64 elapsed = startDate.msecsTo(now);
+    qint64 left = ((100.0 / progress) * elapsed) - elapsed;
+
+    bool last = (i+1 == size);
+
+    QString line1 = QString("Processed %1: %2 faces")
+      .arg(path).arg(faceCnt);
+
+    QString line2 = QString("[ %3/%4 (%5%) | %6 faces | %7 %8 ]")
+      .arg(i+1).arg(size).arg(progress, 0, 'f', 1).arg(faceTot)
+      .arg(!last ? Util::formatTime(left) : Util::formatTime(elapsed))
+      .arg(!last ? "left" : "elapsed");
+
+    QString msg = QString("%1\n%2").arg(line1).arg(line2);
+
+    // Rewind to beginning and output message. If at second line or
+    // latter then overwrite everything with empty spaces to "blank"
+    // out so no traces are left if the new lines are longer than
+    // the last ones.
+    {
+      using namespace std;
+      cout << '\r';
+      if (i > 0) {
+        cout << QString(lastLen, ' ').toStdString() << '\r';
+      }
+      cout << msg.toStdString();
+      cout.flush();
+    }
+
+    lastLen = msg.size();
   }
 
   return 0;
