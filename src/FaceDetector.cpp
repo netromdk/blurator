@@ -75,7 +75,7 @@ QList<FacePtr> FaceDetector::detect(const MatPtr image) {
         qSwap<cv::Rect>(eye1, eye2);
         qSwap<int>(area1, area2);
       }
-      for (int i = 2; i < eyes.size(); i++) {
+      for (size_t i = 2; i < eyes.size(); i++) {
         const auto &eye = eyes[i];
         int area = eye.width * eye.height;
         if (area > area1 && area < area2) {
