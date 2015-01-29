@@ -5,6 +5,8 @@
 #include <QPair>
 #include <QDebug>
 
+#include <memory>
+
 #include <opencv2/opencv.hpp>
 
 #include "Global.h"

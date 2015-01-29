@@ -138,7 +138,6 @@ int main(int argc, char **argv) {
   QDateTime startDate = QDateTime::currentDateTime();
 
   const int size = images.size();
-  const int fwidth = ceil(log10(size));
   qint64 faceCnt = 0, faceTot = 0;
   for (int i = 0; i < size; i++) {
     const QString &path = images[i];
