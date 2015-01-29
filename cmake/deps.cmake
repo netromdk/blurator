@@ -4,8 +4,11 @@ if (NOT WIN32)
   set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}
     "/usr/local/opt"
     "/usr/local/opt/qt5"
+    "/usr/local/Qt-5.4.0"
+    "/usr/local/Qt-5.3.2"
     "/usr/local/Qt-5.3.1"
-    "/usr/local/Qt-5.3.2")
+    "/usr/local/Qt-5.3.0"
+    "/usr/local/Qt-5.2.1")
 endif()
 
 set(CMAKE_AUTOMOC ON) # moc when necessary.
