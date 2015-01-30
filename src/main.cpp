@@ -172,11 +172,8 @@ int main(int argc, char **argv) {
 
       faceTot += faceCnt;
 
-      // Render face overlays to an image file to visualize the result.
+      // Blur each of the faces.
       if (!faces.isEmpty()) {
-        QImage overlay = QImage::fromData(imageData);
-        Util::drawFaces(overlay, faces);
-
         // Save original to backup file.
         if (!noBackup) {
           QString bpath = Util::getBackupPath(path);
@@ -189,8 +186,11 @@ int main(int argc, char **argv) {
           }
         }
 
-        if (!overlay.save(path)) {
-          qCritical() << "Could not save overlays";
+        Util::blurFaces(image, faces);
+        QImage res;
+        Util::matToImage(image, res);
+        if (!res.save(path)) {
+          qCritical() << "Could not save blurred image!";
         }
       }
     }

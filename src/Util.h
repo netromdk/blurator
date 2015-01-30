@@ -66,6 +66,11 @@ public:
    * Blur a region of an image.
    */
   static void blurRegion(MatPtr image, cv::Rect region);
+
+  /**
+   * Blur each face in an image.
+   */
+  static void blurFaces(MatPtr image, const QList<FacePtr> &faces);
 };
 
 B_END_NAMESPACE

@@ -175,4 +175,10 @@ void Util::blurRegion(MatPtr image, cv::Rect region) {
   cv::blur(sub, sub, cv::Size(7, 7));
 }
 
+void Util::blurFaces(MatPtr image, const QList<FacePtr> &faces) {
+  foreach (FacePtr face, faces) {
+    blurRegion(image, face->getFace());
+  }
+}
+
 B_END_NAMESPACE
