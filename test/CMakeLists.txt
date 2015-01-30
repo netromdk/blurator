@@ -37,6 +37,12 @@ add_blurator_test(
   )
 
 add_blurator_test(
+  TestImageConversionMat
+  ${LIBNAME}
+  TestImageConversionMat.cpp
+  )
+
+add_blurator_test(
   TestRectConversion
   ${LIBNAME}
   TestRectConversion.cpp
