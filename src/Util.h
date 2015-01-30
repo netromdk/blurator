@@ -22,6 +22,8 @@ public:
   static MatPtr imageToMat(const QByteArray &data, bool loadAlpha = false);
   static MatPtr imageToMat(const char *data, int len, bool loadAlpha = false);
 
+  static bool matToImage(MatPtr image, QImage &out);
+
   static QRect toQRect(const cv::Rect &rect);
   static cv::Rect toCVRect(const QRect &rect);
 
@@ -59,6 +61,11 @@ public:
    * Formats a number of milliseconds in string format.
    */
   static QString formatTime(qint64 msecs);
+
+  /**
+   * Blur a region of an image.
+   */
+  static void blurRegion(MatPtr image, cv::Rect region);
 };
 
 B_END_NAMESPACE

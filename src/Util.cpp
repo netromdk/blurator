@@ -52,6 +52,14 @@ MatPtr Util::imageToMat(const char *data, int len, bool loadAlpha) {
   return mat;
 }
 
+bool Util::matToImage(MatPtr image, QImage &out) {
+  std::vector<unsigned char> buf;
+  if (!cv::imencode(".png", *image, buf)) {
+    return false;
+  }
+  return out.loadFromData(buf.data(), buf.size());
+}
+
 QRect Util::toQRect(const cv::Rect &rect) {
   return QRect(rect.x, rect.y, rect.width, rect.height);
 }
@@ -160,6 +168,11 @@ QString Util::formatTime(qint64 msecs) {
     res += QString("%1%2ms").arg(!res.isEmpty() ? " " : "").arg(msecs);
   }
   return res;
+}
+
+void Util::blurRegion(MatPtr image, cv::Rect region) {
+  cv::Mat sub = cv::Mat(*image, region);
+  cv::blur(sub, sub, cv::Size(7, 7));
 }
 
 B_END_NAMESPACE
