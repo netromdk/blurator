@@ -188,9 +188,13 @@ int main(int argc, char **argv) {
 
         Util::blurFaces(image, faces);
         QImage res;
-        Util::matToImage(image, res);
-        if (!res.save(path)) {
-          qCritical() << "Could not save blurred image!";
+        if (Util::matToImage(image, res)) {
+          if (!res.save(path)) {
+            qCritical() << "Could not save blurred image!";
+          }
+        }
+        else {
+          qCritical() << "Could not convert mat to image!";
         }
       }
     }
