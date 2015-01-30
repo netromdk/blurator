@@ -207,6 +207,8 @@ int main(int argc, char **argv) {
 
   updateProgress:
     static int lastLen = 0;
+    static const QString nw("\033[0;37m"); // normal and white
+    static const QString bw("\033[1;37m"); // bold and white
 
     float progress = float(i+1) / float(size) * 100.0;
 
@@ -221,13 +223,14 @@ int main(int argc, char **argv) {
       line1 = QString("Processed %1: %2 faces").arg(path).arg(faceCnt);
     }
 
-    QString line2 = QString("[ %3/%4 (%5%) | %6 faces | %7 %8 ]")
-      .arg(i+1).arg(size).arg(progress, 0, 'f', 1).arg(faceTot)
+    QString line2 = QString("[ %1%2%%3 (%4/%5) | %6%7 faces blurred%8 | %9 %10 ]")
+      .arg(bw).arg(progress, 0, 'f', 1).arg(nw).arg(i+1).arg(size)
+      .arg(bw).arg(faceTot).arg(nw)
       .arg(!last ? Util::formatTime(left) : Util::formatTime(elapsed))
       .arg(!last ? "left" : "elapsed");
 
     QString msg =
-      QString("%1%2").arg(verbose ? QString("%1\n").arg(line1) : "").arg(line2);
+      QString("%1%2%3").arg(nw).arg(verbose ? QString("%1\n").arg(line1) : "").arg(line2);
 
     // Rewind to beginning and output message. If at second line or
     // latter then overwrite everything with empty spaces to "blank"
