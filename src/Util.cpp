@@ -131,7 +131,7 @@ QString Util::getBackupPath(const QString &path) {
 }
 
 bool Util::isSupportedImage(const QString &path) {
-  static const QStringList exts = QStringList{"jpg", "jpeg", "png"};
+  static const QStringList exts = QStringList{"jpg", "jpeg", "png", "tiff"};
   return exts.contains(QFileInfo(path).suffix().toLower());
 }
 

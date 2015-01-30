@@ -39,4 +39,22 @@ It will run all tests and show the results.
 Usage
 =====
 
-More to come..
+```
+Usage: blurator [options] paths..
+Blur license plates and faces.
+
+Supported image formats: jpg, png, tiff
+
+Options:
+  -h, --help     Displays this help.
+  -v, --version  Displays version information.
+  -f, --faces    Detect faces.
+  -p, --plates   Detect license plates.
+  -y, --yes      Automatically reply "yes" to all questions.
+  -n, --no       Automatically reply "no" to all questions.
+  --verbose      Shows extra information.
+  --no-backup    Don't store a backup of the original image.
+
+Arguments:
+  paths          Paths to images.
+```

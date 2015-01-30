@@ -39,7 +39,8 @@ int main(int argc, char **argv) {
   qInstallMessageHandler(msgHandler);
 
   QCommandLineParser parser;
-  parser.setApplicationDescription("Blur license plates and faces.");
+  parser.setApplicationDescription("Blur license plates and faces.\n\n"
+                                   "Supported image formats: jpg, png, tiff");
   parser.addHelpOption();
   parser.addVersionOption();
   parser.addPositionalArgument("paths", "Paths to images.", "paths..");
