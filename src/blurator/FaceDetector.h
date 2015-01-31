@@ -21,7 +21,7 @@ private:
   QList<FacePtr> createFaces(std::vector<cv::Rect> &faces, const cv::Mat &image,
                              bool vflip = false);
 
-  cv::CascadeClassifier faceCas, pfaceCas, eyesCas;
+  cv::CascadeClassifier faceCas, pfaceCas;
 };
 
 B_END_NAMESPACE

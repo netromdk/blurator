@@ -37,18 +37,6 @@ bool FaceDetector::setup() {
     valid = false;
   }
 
-  try {
-    auto fs = Util::fileToFileStorage(":res/eyes.xml");
-    if (!fs || !eyesCas.read(fs->getFirstTopLevelNode())) {
-      qCritical() << "Could not read eyes data.";
-      valid = false;
-    }
-  }
-  catch (...) {
-    qCritical() << "Invalid eyes cascade!";
-    valid = false;
-  }
-
   return valid;
 }
 
@@ -100,46 +88,6 @@ QList<FacePtr> FaceDetector::createFaces(std::vector<cv::Rect> &faces,
 
     auto face = FacePtr(new Face);
     face->setFace(f);
-
-    // Detect two eyes for each face with scale factor 1.1, 3
-    // min. neighbors and min size of 30x30.
-    cv::Mat facePart = image(f);
-    std::vector<cv::Rect> eyes;
-    eyesCas.detectMultiScale(facePart, eyes, 1.1, 3, 0, cv::Size(30, 30));
-    if (eyes.size() >= 2) {
-      // Take the two largest.
-      auto &eye1 = eyes[0], &eye2 = eyes[1];
-      int area1 = eye1.width * eye1.height,
-        area2 = eye2.width * eye2.height;
-      if (area1 > area2) {
-        qSwap<cv::Rect>(eye1, eye2);
-        qSwap<int>(area1, area2);
-      }
-      for (size_t i = 2; i < eyes.size(); i++) {
-        const auto &eye = eyes[i];
-        int area = eye.width * eye.height;
-        if (area > area1 && area < area2) {
-          eye1 = eye;
-          area1 = area;
-        }
-        else if (area > area2 && area < area1) {
-          eye2 = eye;
-          area2 = area;
-        }
-        else if (area > area1 && area > area2) {
-          eye1 = eye;
-          area1 = area;
-          qSwap<cv::Rect>(eye1, eye2);
-          qSwap<int>(area1, area2);
-        }
-      }
-
-      // Since we are only looking at the sub-region of the face we
-      // need to convert into image coordinates.
-      eye1.x += f.x; eye1.y += f.y;
-      eye2.x += f.x; eye2.y += f.y;
-      face->setEyes(eye1, eye2);
-    }
 
     results << face;
   }
