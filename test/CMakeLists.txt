@@ -1,5 +1,5 @@
 # Static library for test cases.
-include_directories(../src)
+include_directories(../src/blurator)
 
 set(LIBNAME "testlib")
 add_library(
@@ -9,16 +9,16 @@ add_library(
   Test.h
   Test.cpp
 
-  ../src/Util.h
-  ../src/Util.cpp
+  ../src/blurator/Util.h
+  ../src/blurator/Util.cpp
 
-  ../src/Face.h
-  ../src/Face.cpp
+  ../src/blurator/Face.h
+  ../src/blurator/Face.cpp
 
-  ../src/FaceDetector.h
-  ../src/FaceDetector.cpp
+  ../src/blurator/FaceDetector.h
+  ../src/blurator/FaceDetector.cpp
 
-  ../res.qrc
+  ../src/blurator/res.qrc
   )
 
 set_blurator_links(${LIBNAME})

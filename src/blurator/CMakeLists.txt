@@ -11,7 +11,7 @@ add_executable(
   FaceDetector.h
   FaceDetector.cpp
 
-  ../res.qrc
+  res.qrc
   )
 
 set_blurator_links(${PROJECT_NAME})
