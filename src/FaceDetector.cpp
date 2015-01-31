@@ -26,6 +26,18 @@ FaceDetector::FaceDetector() {
   }
 
   try {
+    auto fs = Util::fileToFileStorage(":res/profileface.xml");
+    if (!fs || !pfaceCas.read(fs->getFirstTopLevelNode())) {
+      qCritical() << "Could not read profile faces data.";
+      valid = false;
+    }
+  }
+  catch (...) {
+    qCritical() << "Invalid profile face cascade!";
+    valid = false;
+  }
+
+  try {
     auto fs = Util::fileToFileStorage(":res/eyes.xml");
     if (!fs || !eyesCas.read(fs->getFirstTopLevelNode())) {
       qCritical() << "Could not read eyes data.";
@@ -55,15 +67,40 @@ QList<FacePtr> FaceDetector::detect(const MatPtr image) {
   // minimum 80x80 face size.
   std::vector<cv::Rect> faces;
   faceCas.detectMultiScale(grayImg, faces, 1.1, 3, 0, cv::Size(80, 80));
+  results.append(createFaces(faces, grayImg));
+  faces.clear();
 
+  // Detect profile faces with the left side visible.
+  pfaceCas.detectMultiScale(grayImg, faces, 1.1, 3, 0, cv::Size(80, 80));
+  results.append(createFaces(faces, grayImg));
+  faces.clear();
+
+  // Flip image vertically to detect the right side of faces.
+  cv::flip(grayImg, grayImg, 1);
+  pfaceCas.detectMultiScale(grayImg, faces, 1.1, 3, 0, cv::Size(80, 80));
+  results.append(createFaces(faces, grayImg, true));
+
+  return results;
+}
+
+QList<FacePtr> FaceDetector::createFaces(std::vector<cv::Rect> &faces,
+                                         const cv::Mat &image, bool vflip) {
+  cv::Size imageSize = image.size();
+  QList<FacePtr> results;
   for (auto it = faces.begin(); it != faces.end(); ++it) {
-    const auto &f = *it;
+    auto &f = *it;
+
+    // Flip vertically.
+    if (vflip) {
+      f.x = imageSize.width - f.width - f.x;
+    }
+
     auto face = FacePtr(new Face);
     face->setFace(f);
 
     // Detect two eyes for each face with scale factor 1.1, 3
     // min. neighbors and min size of 30x30.
-    cv::Mat facePart = grayImg(f);
+    cv::Mat facePart = image(f);
     std::vector<cv::Rect> eyes;
     eyesCas.detectMultiScale(facePart, eyes, 1.1, 3, 0, cv::Size(30, 30));
     if (eyes.size() >= 2) {
@@ -103,7 +140,6 @@ QList<FacePtr> FaceDetector::detect(const MatPtr image) {
 
     results << face;
   }
-    
   return results;
 }
 
