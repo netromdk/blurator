@@ -171,9 +171,9 @@ QString Util::formatTime(qint64 msecs) {
   return res;
 }
 
-void Util::blurRegion(MatPtr image, cv::Rect region) {
+void Util::blurRegion(MatPtr image, cv::Rect region, cv::Size ksize) {
   cv::Mat sub = cv::Mat(*image, region);
-  cv::blur(sub, sub, cv::Size(50, 50));
+  cv::blur(sub, sub, ksize);
 }
 
 void Util::blurFaces(MatPtr image, const QList<FacePtr> &faces) {
