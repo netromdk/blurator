@@ -80,6 +80,7 @@ QList<FacePtr> FaceDetector::detect(const MatPtr image) {
   pfaceCas.detectMultiScale(grayImg, faces, 1.1, 3, 0, cv::Size(80, 80));
   results.append(createFaces(faces, grayImg, true));
 
+  grayImg.release();
   return results;
 }
 
