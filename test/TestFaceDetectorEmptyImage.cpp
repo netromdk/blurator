@@ -7,7 +7,7 @@ int main() {
   TestEnv env;
 
   FaceDetector detector;
-  if (!detector.isValid()) {
+  if (!detector.setup()) {
     qCritical() << "Detector is not valid!";
     return FAIL;
   }

@@ -136,6 +136,12 @@ int main(int argc, char **argv) {
     qWarning() << "Warning no backup files will be created!";
   }
 
+  FaceDetector faceDet;
+  if (dFaces && !faceDet.setup()) {
+    qCritical() << "Could not setup facial detector.";
+    return -1;
+  }
+
   QDateTime startDate = QDateTime::currentDateTime();
 
   const int size = images.size();
@@ -158,13 +164,7 @@ int main(int argc, char **argv) {
         return -1;
       }
 
-      FaceDetector detector;
-      if (!detector.isValid()) {
-        qCritical() << "Could not setup facial detector.";
-        return -1;
-      }
-
-      QList<FacePtr> faces = detector.detect(image);
+      QList<FacePtr> faces = faceDet.detect(image);
       faceCnt = faces.size();
 
       if (faces.isEmpty()) {

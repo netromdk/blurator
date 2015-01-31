@@ -9,8 +9,8 @@
 
 B_BEGIN_NAMESPACE
 
-FaceDetector::FaceDetector() {
-  valid = true;
+bool FaceDetector::setup() {
+  bool valid = true;
 
   // Read data from Qt resources.
   try {
@@ -48,6 +48,8 @@ FaceDetector::FaceDetector() {
     qCritical() << "Invalid eyes cascade!";
     valid = false;
   }
+
+  return valid;
 }
 
 QList<FacePtr> FaceDetector::detect(const MatPtr image) {
