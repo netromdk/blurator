@@ -20,8 +20,11 @@ public:
   QList<FacePtr> detect(const MatPtr image);
 
 private:
+  QList<FacePtr> createFaces(std::vector<cv::Rect> &faces, const cv::Mat &image,
+                             bool vflip = false);
+
   bool valid;
-  cv::CascadeClassifier faceCas, eyesCas;
+  cv::CascadeClassifier faceCas, pfaceCas, eyesCas;
 };
 
 B_END_NAMESPACE
