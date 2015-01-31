@@ -12,11 +12,8 @@ add_library(
   ../src/blurator/Util.h
   ../src/blurator/Util.cpp
 
-  ../src/blurator/Face.h
-  ../src/blurator/Face.cpp
-
-  ../src/blurator/FaceDetector.h
-  ../src/blurator/FaceDetector.cpp
+  ../src/blurator/Detector.h
+  ../src/blurator/Detector.cpp
 
   ../src/blurator/res.qrc
   )
@@ -49,15 +46,9 @@ add_blurator_test(
   )
 
 add_blurator_test(
-  TestFace
+  TestDetectorValid
   ${LIBNAME}
-  TestFace.cpp
-  )
-
-add_blurator_test(
-  TestFaceDetectorValid
-  ${LIBNAME}
-  TestFaceDetectorValid.cpp
+  TestDetectorValid.cpp
   )
 
 add_blurator_test(

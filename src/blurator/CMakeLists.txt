@@ -5,11 +5,8 @@ add_executable(
   Util.h
   Util.cpp
 
-  Face.h
-  Face.cpp
-
-  FaceDetector.h
-  FaceDetector.cpp
+  Detector.h
+  Detector.cpp
 
   res.qrc
   )

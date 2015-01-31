@@ -4,6 +4,8 @@
 #define PASS 0
 #define FAIL 1
 
+#include <QDebug>
+
 /**
  * Constructor sets up a testing environment to use in test cases, and
  * desconstructor cleans up everything.

@@ -1,17 +1,17 @@
 #include "Test.h"
 
-#include "FaceDetector.h"
+#include "Detector.h"
 B_USE_NAMESPACE
 
 int main() {
   TestEnv env;
 
-  FaceDetector detector;
-  if (!detector.setup()) {
+  Detector detector;
+  if (!detector.isValid()) {
     qCritical() << "Detector is not valid!";
     return FAIL;
   }
 
-  auto faces = detector.detect(nullptr);
-  return (faces.isEmpty() ? PASS : FAIL);
+  auto faces = detector.detectFaces(nullptr);
+  return (faces.empty() ? PASS : FAIL);
 }
