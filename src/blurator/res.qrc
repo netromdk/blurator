@@ -3,6 +3,5 @@
   <qresource>
     <file alias="res/face.xml">res/lbpcascade_frontalface.xml</file>
     <file alias="res/profileface.xml">res/lbpcascade_profileface.xml</file>
-    <file alias="res/eyes.xml">res/haarcascade_eye_tree_eyeglasses.xml</file>
   </qresource>
 </RCC>
