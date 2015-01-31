@@ -2,6 +2,5 @@
 <RCC version="1.0">
   <qresource>
     <file alias="res/face.xml">res/lbpcascade_frontalface.xml</file>
-    <file alias="res/profileface.xml">res/lbpcascade_profileface.xml</file>
   </qresource>
 </RCC>

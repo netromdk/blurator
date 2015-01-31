@@ -68,25 +68,6 @@ cv::Rect Util::toCVRect(const QRect &rect) {
   return cv::Rect(rect.x(), rect.y(), rect.width(), rect.height());
 }
 
-void Util::drawFaces(QImage &image, const QList<FacePtr> &faces) {
-  QPainter painter;
-  painter.begin(&image);
-
-  QPen pen = painter.pen();
-  pen.setWidth(3);
-  painter.setPen(pen);
-
-  foreach (const auto &face, faces) {
-    painter.drawRect(toQRect(face->getFace()));
-    if (face->hasEyes()) {
-      painter.drawRect(toQRect(face->getEye1()));
-      painter.drawRect(toQRect(face->getEye2()));
-    }
-  }
-
-  painter.end();
-}
-
 FSPtr Util::fileToFileStorage(const QString &path) {
   QFile file(path);
   if (!file.open(QIODevice::ReadOnly)) {
@@ -176,9 +157,9 @@ void Util::blurRegion(MatPtr image, cv::Rect region, cv::Size ksize) {
   cv::blur(sub, sub, ksize);
 }
 
-void Util::blurFaces(MatPtr image, const QList<FacePtr> &faces) {
-  foreach (FacePtr face, faces) {
-    blurRegion(image, face->getFace());
+void Util::blurFaces(MatPtr image, const std::vector<cv::Rect> &faces) {
+  foreach (const cv::Rect &face, faces) {
+    blurRegion(image, face);
   }
 }
 

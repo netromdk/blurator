@@ -18,7 +18,7 @@
 #include "Types.h"
 #include "Global.h"
 #include "Version.h"
-#include "FaceDetector.h"
+#include "Detector.h"
 
 B_USE_NAMESPACE
 
@@ -143,9 +143,9 @@ int main(int argc, char **argv) {
     qWarning() << "Warning no backup files will be created!";
   }
 
-  FaceDetector faceDet;
-  if (dFaces && !faceDet.setup()) {
-    qCritical() << "Could not setup facial detector.";
+  Detector detector;
+  if (!detector.isValid()) {
+    qCritical() << "Could not setup detector.";
     return -1;
   }
 
@@ -171,17 +171,17 @@ int main(int argc, char **argv) {
         return -1;
       }
 
-      QList<FacePtr> faces = faceDet.detect(image);
+      std::vector<cv::Rect> faces = detector.detectFaces(image);
       faceCnt = faces.size();
 
-      if (faces.isEmpty()) {
+      if (faces.empty()) {
         goto updateProgress;
       }
 
       faceTot += faceCnt;
 
       // Blur each of the faces.
-      if (!faces.isEmpty()) {
+      if (!faces.empty()) {
         // Save original to backup file.
         if (!noBackup) {
           QString bpath = Util::getBackupPath(path);

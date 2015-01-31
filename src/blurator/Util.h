@@ -3,9 +3,7 @@
 #define B_UTIL_H
 
 #include <QRect>
-#include <QList>
 
-#include "Face.h"
 #include "Types.h"
 #include "Global.h"
 
@@ -26,8 +24,6 @@ public:
 
   static QRect toQRect(const cv::Rect &rect);
   static cv::Rect toCVRect(const QRect &rect);
-
-  static void drawFaces(QImage &image, const QList<FacePtr> &faces);
 
   /**
    * Reads data from path and loads into a cv::FileStorage. Most
@@ -71,7 +67,7 @@ public:
   /**
    * Blur each face in an image.
    */
-  static void blurFaces(MatPtr image, const QList<FacePtr> &faces);
+  static void blurFaces(MatPtr image, const std::vector<cv::Rect> &faces);
 };
 
 B_END_NAMESPACE
