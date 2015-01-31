@@ -34,6 +34,14 @@ include(target)
 
 add_subdirectory(src/blurator)
 
+if (NOT ENABLE_POSSAMP)
+  set(ENABLE_POSSAMP "NO")
+endif()
+
+if (${ENABLE_POSSAMP} MATCHES "YES")
+  add_subdirectory(src/possamp)
+endif()
+
 if (NOT ENABLE_TESTING)
   set(ENABLE_TESTING "NO")
 endif()
@@ -48,5 +56,6 @@ message(STATUS "--------------------------------------------------")
 message(STATUS "BUILD: ${CMAKE_BUILD_TYPE}")
 message(STATUS "VERSION: ${VERSION_NUMBER}")
 message(STATUS "Building tests: ${ENABLE_TESTING}")
+message(STATUS "Building possamp: ${ENABLE_POSSAMP}")
 message(STATUS "Using C++11 features")
 message(STATUS "--------------------------------------------------")

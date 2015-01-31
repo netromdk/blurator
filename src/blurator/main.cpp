@@ -171,7 +171,7 @@ int main(int argc, char **argv) {
         return -1;
       }
 
-      std::vector<cv::Rect> faces = detector.detectFaces(image);
+      auto faces = detector.detectFaces(image);
       faceCnt = faces.size();
 
       if (faces.empty()) {
