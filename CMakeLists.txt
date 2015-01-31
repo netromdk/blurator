@@ -17,7 +17,7 @@ endif()
 
 # Find current version from source code.
 file(
-  STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/Version.h"
+  STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/src/blurator/Version.h"
   VERSION_DATA REGEX "define.+_VERSION.+[0-9]+$"
   )
 set(VERSION_NUMBER "")
@@ -32,7 +32,7 @@ string(SUBSTRING ${VERSION_NUMBER} 0 ${length} VERSION_NUMBER)
 include(platform)
 include(target)
 
-add_subdirectory(src)
+add_subdirectory(src/blurator)
 
 if (NOT ENABLE_TESTING)
   set(ENABLE_TESTING "NO")
