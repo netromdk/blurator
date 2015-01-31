@@ -123,7 +123,14 @@ int main(int argc, char **argv) {
       images << path;
     }
     else if (fi.isDir()) {
-      qWarning() << "Ignoring folder:" << path;
+      QDir dir(path);
+      QStringList files =
+        dir.entryList(QDir::Files | QDir::NoDotAndDotDot | QDir::Readable);
+      foreach (const QString &file, files) {
+        if (Util::isSupportedImage(file)) {
+          images << dir.absoluteFilePath(file);
+        }
+      }
     }
   }
 
