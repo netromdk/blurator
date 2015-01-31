@@ -63,9 +63,10 @@ public:
   static QString formatTime(qint64 msecs);
 
   /**
-   * Blur a region of an image.
+   * Blur a region of an image with optional kernel size.
    */
-  static void blurRegion(MatPtr image, cv::Rect region);
+  static void blurRegion(MatPtr image, cv::Rect region,
+                         cv::Size ksize = cv::Size(50, 50));
 
   /**
    * Blur each face in an image.
