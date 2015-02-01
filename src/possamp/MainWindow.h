@@ -27,6 +27,7 @@ protected:
 private slots:
   void onImageSelected();
   void onObjectSelected();
+  void onNewObject(QRect object);
 
 private:
   void setupLayout();
@@ -35,7 +36,7 @@ private:
   void loadObjects(const QString &file);
   void loadImage(const QString &path);
 
-  QString root, samplesSub, samplesRoot;
+  QString root, samplesSub, samplesRoot, curFile;
   std::shared_ptr<ObjectManager> objMgr;
 
   QListWidget *imgList, *objList;

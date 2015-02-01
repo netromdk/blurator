@@ -2,29 +2,42 @@
 #ifndef B_IMAGE_WIDGET_H
 #define B_IMAGE_WIDGET_H
 
+#include <QImage>
 #include <QString>
 #include <QWidget>
 
 #include "Global.h"
 
 class QRect;
-class QLabel;
+class QPainter;
 
 B_BEGIN_NAMESPACE
 
 class ImageWidget : public QWidget {
+  Q_OBJECT
+
 public:
-  ImageWidget();
-  
   void loadImage(const QString &path);
   void showObject(const QRect &object);
   void clear();
 
+signals:
+  void newObject(QRect object);
+
+protected:
+  void mousePressEvent(QMouseEvent *event);
+  void mouseMoveEvent(QMouseEvent *event);
+  void mouseReleaseEvent(QMouseEvent *event);
+  void paintEvent(QPaintEvent *event);
+
 private:
-  void setupLayout();
+  QRect getCurObject() const;
+  void drawObject(QPainter &painter, const QRect &object);
 
   QString path;
-  QLabel *view;
+  QPoint startPos, curPos;
+  QRect curObject;
+  QImage image;
 };
 
 B_END_NAMESPACE

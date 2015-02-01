@@ -90,6 +90,11 @@ bool ObjectManager::save() {
   return true;
 }
 
+void ObjectManager::addObject(const QString &file, const QRect &object) {
+  auto &objs = objects[file];
+  objs.append(object);
+}
+
 QList<QRect> ObjectManager::getObjects(const QString &file) const {
   return objects[file];
 }
