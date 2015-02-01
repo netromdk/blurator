@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFileDialog>
+#include <QListWidget>
 #include <QApplication>
 
 #include "Util.h"
@@ -28,18 +29,39 @@ void MainWindow::showEvent(QShowEvent *event) {
   }
 }
 
+void MainWindow::onImageSelected() {
+  QListWidgetItem *itm = imgList->currentItem();
+  if (!itm) return;
+
+  QString file = itm->text();
+  loadObjects(file);
+
+  QString path = QDir(samplesRoot).absoluteFilePath(file);
+  loadImage(path);
+}
+
 void MainWindow::setupLayout() {
-  QLabel *l1 = new QLabel("IMAGE LIST"),
-    *l2 = new QLabel("RECT LIST"),
-    *l3 = new QLabel("IMAGE");
+  const int listWidth = 200;
+
+  imgList = new QListWidget;
+  imgList->setFixedWidth(listWidth);
+  connect(imgList, &QListWidget::itemSelectionChanged,
+          this, &MainWindow::onImageSelected);
+
+  objList = new QListWidget;
+  objList->setFixedWidth(listWidth);
+
+  imgView = new QLabel("IMAGE");
 
   QVBoxLayout *listLayout = new QVBoxLayout;
-  listLayout->addWidget(l1);
-  listLayout->addWidget(l2);
+  listLayout->addWidget(new QLabel(tr("Images")));
+  listLayout->addWidget(imgList);
+  listLayout->addWidget(new QLabel(tr("Objects")));
+  listLayout->addWidget(objList);
   
   QHBoxLayout *layout = new QHBoxLayout;
   layout->addLayout(listLayout);
-  layout->addWidget(l3);
+  layout->addWidget(imgView);
 
   QWidget *w = new QWidget;
   w->setLayout(layout);
@@ -82,7 +104,6 @@ void MainWindow::askForFiles() {
       return;
     }
 
-    // TODO: Load objects into GUI lists.
     qDebug() << "RESULTS:" << objMgr->getObjects();
   }
 
@@ -97,6 +118,36 @@ void MainWindow::askForFiles() {
     }
   }
   qDebug() << "SAMPLES ROOT FOLDER:" << samplesRoot;
+
+  loadItems();
+}
+
+void MainWindow::loadItems() {
+  imgList->clear();
+  objList->clear();
+
+  foreach (const QString &file, objMgr->getObjects().keys()) {
+    imgList->addItem(file);
+  }
+}
+
+void MainWindow::loadObjects(const QString &file) {
+  objList->clear();
+
+  foreach (const QRect &obj, objMgr->getObjects(file)) {
+    QListWidgetItem *itm = new QListWidgetItem(Util::rectToStr(obj));
+    itm->setData(Qt::UserRole, obj);
+    objList->addItem(itm);
+  }
+}
+
+void MainWindow::loadImage(const QString &path) {
+  imgView->clear();
+  if (!QFile::exists(path)) {
+    imgView->setText(tr("File does not exist!"));
+    return;
+  }
+  imgView->setPixmap(path);
 }
 
 B_END_NAMESPACE
