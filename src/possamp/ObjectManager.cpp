@@ -1,5 +1,7 @@
+#include <QDir>
 #include <QFile>
 #include <QDebug>
+#include <QFileInfo>
 
 #include "ObjectManager.h"
 
@@ -86,6 +88,13 @@ bool ObjectManager::save() {
   }
   
   return true;
+}
+
+QString ObjectManager::determineFolder() const {
+  if (!hasObjects()) return QString();
+  QString first = objects.keys()[0];
+  QFileInfo firstInfo(first), fileInfo(file);
+  return fileInfo.dir().absoluteFilePath(firstInfo.dir().path());
 }
 
 B_END_NAMESPACE
