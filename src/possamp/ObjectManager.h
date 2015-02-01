@@ -19,6 +19,7 @@ public:
   bool save();
 
   void addObject(const QString &file, const QRect &object);
+  void removeObject(const QString &file, const QRect &object);
 
   bool hasObjects() const { return !objects.isEmpty(); }
   const QMap<QString, QList<QRect> > &getObjects() const { return objects; }

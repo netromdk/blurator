@@ -23,12 +23,14 @@ public:
 
 protected:
   void showEvent(QShowEvent *event);
+  bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
   void onImageSelected();
   void onObjectSelected();
   void onNewObject(QRect object);
   void onSave();
+  void onRemoveCurrentObject();
 
 private:
   void setupLayout();

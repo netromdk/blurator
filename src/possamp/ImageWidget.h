@@ -35,7 +35,6 @@ private:
   QRect getCurObject() const;
   void drawObject(QPainter &painter, const QRect &object);
 
-  QString path;
   QPoint startPos, curPos;
   QList<QRect> curObjects;
   QImage image;

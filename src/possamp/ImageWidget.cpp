@@ -12,7 +12,6 @@
 B_BEGIN_NAMESPACE
 
 void ImageWidget::loadImage(const QString &path) {
-  this->path = path;
   image = QImage(path);
   resize(image.size());
 }
@@ -31,6 +30,7 @@ void ImageWidget::showObjects(const QList<QRect> &objects) {
 void ImageWidget::clear() {
   curObjects.clear();
   startPos = curPos = QPoint();
+  update();
 }
 
 void ImageWidget::mousePressEvent(QMouseEvent *event) {
@@ -63,7 +63,7 @@ void ImageWidget::paintEvent(QPaintEvent *event) {
     drawObject(painter, object);
   }
 
-  if (!startPos.isNull() && !curPos.isNull()) {
+  if (!startPos.isNull() && !curPos.isNull() && startPos != curPos) {
     drawObject(painter, getCurObject());
   }
 }
@@ -77,11 +77,15 @@ QRect ImageWidget::getCurObject() const {
 }
 
 void ImageWidget::drawObject(QPainter &painter, const QRect &object) {
+  painter.save();
+
   QPen pen = painter.pen();
   pen.setWidth(2);
   pen.setColor(Qt::red);
   painter.setPen(pen);
+
   painter.drawRect(object);
+  painter.restore();
 }
 
 B_END_NAMESPACE
