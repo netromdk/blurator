@@ -18,7 +18,9 @@ public:
   bool load();
   bool save();
 
+  bool hasObjects() const { return !objects.isEmpty(); }
   const QMap<QString, QList<QRect> > &getObjects() const { return objects; }
+  QString determineFolder() const;
 
 private:
   QString file;

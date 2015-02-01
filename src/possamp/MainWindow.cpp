@@ -81,8 +81,21 @@ void MainWindow::askForFiles() {
                            tr("Data file was either invalid or empty."));
       return;
     }
+
+    // TODO: Load objects into GUI lists.
     qDebug() << "RESULTS:" << objMgr->getObjects();
   }
+
+  QString fld = objMgr->determineFolder();
+  if (fld.isEmpty()) {
+    fld = QFileDialog::getExistingDirectory(this, tr("Choose samples image root"),
+                                            QDir::homePath());
+    if (fld.isEmpty()) {
+      QApplication::quit();
+      return;
+    }
+  }
+  qDebug() << "FOLDER:" << fld;
 }
 
 B_END_NAMESPACE
