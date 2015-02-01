@@ -46,7 +46,9 @@ void ImageWidget::mouseMoveEvent(QMouseEvent *event) {
 
 void ImageWidget::mouseReleaseEvent(QMouseEvent *event) {
   QWidget::mouseReleaseEvent(event);
-  emit newObject(getCurObject());
+  if (!startPos.isNull() && !curPos.isNull() && startPos != curPos) {
+    emit newObject(getCurObject());
+  }
   startPos = curPos = QPoint();
   update();
 }
