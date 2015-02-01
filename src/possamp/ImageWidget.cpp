@@ -18,12 +18,18 @@ void ImageWidget::loadImage(const QString &path) {
 }
 
 void ImageWidget::showObject(const QRect &object) {
-  curObject = object;
+  curObjects.clear();
+  curObjects << object;
+  update();
+}
+
+void ImageWidget::showObjects(const QList<QRect> &objects) {
+  curObjects = objects;
   update();
 }
 
 void ImageWidget::clear() {
-  curObject = QRect();
+  curObjects.clear();
   startPos = curPos = QPoint();
 }
 
@@ -51,8 +57,8 @@ void ImageWidget::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
   painter.drawImage(QPoint(0, 0), image);
 
-  if (!curObject.isNull()) {
-    drawObject(painter, curObject);
+  foreach (const QRect &object, curObjects) {
+    drawObject(painter, object);
   }
 
   if (!startPos.isNull() && !curPos.isNull()) {
