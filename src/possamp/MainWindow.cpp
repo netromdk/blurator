@@ -43,11 +43,14 @@ void MainWindow::onImageSelected() {
 }
 
 void MainWindow::onObjectSelected() {
-  QListWidgetItem *itm = objList->currentItem();
-  if (!itm) return;
+  auto items = objList->selectedItems();
+  if (items.isEmpty()) return;
 
-  QRect object = itm->data(Qt::UserRole).toRect();
-  imgView->showObject(object);
+  QList<QRect> objs;
+  foreach (auto *item, items) {
+    objs << item->data(Qt::UserRole).toRect();
+  }
+  imgView->showObjects(objs);
 }
 
 void MainWindow::onNewObject(QRect object) {
@@ -66,6 +69,7 @@ void MainWindow::setupLayout() {
 
   objList = new QListWidget;
   objList->setFixedWidth(listWidth);
+  objList->setSelectionMode(QAbstractItemView::ExtendedSelection);
   connect(objList, &QListWidget::itemSelectionChanged,
           this, &MainWindow::onObjectSelected);
 

@@ -19,6 +19,7 @@ class ImageWidget : public QWidget {
 public:
   void loadImage(const QString &path);
   void showObject(const QRect &object);
+  void showObjects(const QList<QRect> &objects);
   void clear();
 
 signals:
@@ -36,7 +37,7 @@ private:
 
   QString path;
   QPoint startPos, curPos;
-  QRect curObject;
+  QList<QRect> curObjects;
   QImage image;
 };
 
