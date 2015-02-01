@@ -87,11 +87,8 @@ void MainWindow::setupLayout() {
 
 void MainWindow::askForFiles() {
   QString file =
-    "/Users/netrom/Downloads/face_training/face.dat";
-    /*
     QFileDialog::getOpenFileName(this, tr("Choose data file"), QDir::homePath(),
                                  "*.dat");
-    */
 
   // If cancelled then ask to quit or create new file.
   bool isNew = false;
