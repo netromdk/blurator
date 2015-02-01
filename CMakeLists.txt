@@ -32,14 +32,10 @@ string(SUBSTRING ${VERSION_NUMBER} 0 ${length} VERSION_NUMBER)
 include(platform)
 include(target)
 
-add_subdirectory(src/blurator)
+add_subdirectory(src)
 
 if (NOT ENABLE_POSSAMP)
   set(ENABLE_POSSAMP "NO")
-endif()
-
-if (${ENABLE_POSSAMP} MATCHES "YES")
-  add_subdirectory(src/possamp)
 endif()
 
 if (NOT ENABLE_TESTING)

@@ -94,7 +94,7 @@ QList<QRect> ObjectManager::getObjects(const QString &file) const {
   return objects[file];
 }
 
-QString ObjectManager::determineFolder() const {
+QString ObjectManager::determineFolder(QString &subDir) const {
   if (!hasObjects()) return QString();
   QList<QString> flds;
   foreach (const QString &itm, objects.keys()) {
@@ -108,8 +108,9 @@ QString ObjectManager::determineFolder() const {
     root = flds[0];
   }
   QDir fileDir = QFileInfo(file).dir();
+  subDir = root;
   if (fileDir.exists(root)) {
-    root = ".";
+    return fileDir.absolutePath();
   }
   return fileDir.absoluteFilePath(root);
 }

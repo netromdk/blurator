@@ -3,6 +3,8 @@
 #define B_UTIL_H
 
 #include <QRect>
+#include <QString>
+#include <QStringList>
 
 #include "Types.h"
 #include "Global.h"
@@ -68,6 +70,16 @@ public:
    * Blur each face in an image.
    */
   static void blurFaces(MatPtr image, const std::vector<cv::Rect> &faces);
+
+  /**
+   * Represent rect as string.
+   */
+  static QString rectToStr(const QRect &rect);
+
+  /**
+   * Search recursively for supported image files.
+   */
+  static QStringList getImages(const QString &folder);
 };
 
 B_END_NAMESPACE
