@@ -1,8 +1,9 @@
 // Copyright (c) Burator 2014-2015
 #include <QDir>
-#include <QLabel>
 #include <QDebug>
+#include <QLabel>
 #include <QWidget>
+#include <QScrollArea>
 #include <QMessageBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -12,6 +13,7 @@
 
 #include "Util.h"
 #include "MainWindow.h"
+#include "ImageWidget.h"
 
 B_BEGIN_NAMESPACE
 
@@ -40,6 +42,14 @@ void MainWindow::onImageSelected() {
   loadImage(path);
 }
 
+void MainWindow::onObjectSelected() {
+  QListWidgetItem *itm = objList->currentItem();
+  if (!itm) return;
+
+  QRect object = itm->data(Qt::UserRole).toRect();
+  imgView->showObject(object);
+}
+
 void MainWindow::setupLayout() {
   const int listWidth = 200;
 
@@ -50,8 +60,14 @@ void MainWindow::setupLayout() {
 
   objList = new QListWidget;
   objList->setFixedWidth(listWidth);
+  connect(objList, &QListWidget::itemSelectionChanged,
+          this, &MainWindow::onObjectSelected);
 
-  imgView = new QLabel("IMAGE");
+  imgView = new ImageWidget;
+
+  auto *scrollArea = new QScrollArea;
+  scrollArea->setBackgroundRole(QPalette::Dark);
+  scrollArea->setWidget(imgView);
 
   QVBoxLayout *listLayout = new QVBoxLayout;
   listLayout->addWidget(new QLabel(tr("Images")));
@@ -61,7 +77,7 @@ void MainWindow::setupLayout() {
   
   QHBoxLayout *layout = new QHBoxLayout;
   layout->addLayout(listLayout);
-  layout->addWidget(imgView);
+  layout->addWidget(scrollArea);
 
   QWidget *w = new QWidget;
   w->setLayout(layout);
@@ -154,10 +170,10 @@ void MainWindow::loadObjects(const QString &file) {
 void MainWindow::loadImage(const QString &path) {
   imgView->clear();
   if (!QFile::exists(path)) {
-    imgView->setText(tr("File does not exist!"));
+    QMessageBox::warning(this, tr("Error"), tr("File does not exist!"));
     return;
   }
-  imgView->setPixmap(path);
+  imgView->loadImage(path);
 }
 
 B_END_NAMESPACE

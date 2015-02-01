@@ -10,7 +10,10 @@ add_executable(
   ObjectManager.cpp
 
   MainWindow.h
-  MainWindow.cpp  
+  MainWindow.cpp
+
+  ImageWidget.h
+  ImageWidget.cpp
   )
 
 target_link_libraries(
