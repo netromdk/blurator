@@ -24,6 +24,7 @@ private:
   void setupLayout();
   void askForFiles();
 
+  QString samplesRoot;
   std::shared_ptr<ObjectManager> objMgr;
 };
 

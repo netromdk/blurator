@@ -86,16 +86,17 @@ void MainWindow::askForFiles() {
     qDebug() << "RESULTS:" << objMgr->getObjects();
   }
 
-  QString fld = objMgr->determineFolder();
-  if (fld.isEmpty()) {
-    fld = QFileDialog::getExistingDirectory(this, tr("Choose samples image root"),
-                                            QDir::homePath());
-    if (fld.isEmpty()) {
+  samplesRoot = objMgr->determineFolder();
+  if (samplesRoot.isEmpty()) {
+    samplesRoot =
+      QFileDialog::getExistingDirectory(this, tr("Choose samples image root"),
+                                        QDir::homePath());
+    if (samplesRoot.isEmpty()) {
       QApplication::quit();
       return;
     }
   }
-  qDebug() << "FOLDER:" << fld;
+  qDebug() << "SAMPLES ROOT FOLDER:" << samplesRoot;
 }
 
 B_END_NAMESPACE

@@ -92,9 +92,18 @@ bool ObjectManager::save() {
 
 QString ObjectManager::determineFolder() const {
   if (!hasObjects()) return QString();
-  QString first = objects.keys()[0];
-  QFileInfo firstInfo(first), fileInfo(file);
-  return fileInfo.dir().absoluteFilePath(firstInfo.dir().path());
+  QList<QString> flds;
+  foreach (const QString &itm, objects.keys()) {
+    QString fld = QFileInfo(itm).dir().path();
+    if (!flds.contains(fld)) {
+      flds << fld;
+    }
+  }
+  QString root(".");
+  if (flds.size() == 1) {
+    root = flds[0];
+  }
+  return QFileInfo(file).dir().absoluteFilePath(root);
 }
 
 B_END_NAMESPACE
