@@ -4,7 +4,10 @@
 
 #include <QMainWindow>
 
+#include <memory>
+
 #include "Global.h"
+#include "ObjectManager.h"
 
 B_BEGIN_NAMESPACE
 
@@ -20,6 +23,8 @@ protected:
 private:
   void setupLayout();
   void askForFiles();
+
+  std::shared_ptr<ObjectManager> objMgr;
 };
 
 B_END_NAMESPACE
