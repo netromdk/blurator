@@ -4,6 +4,9 @@ add_executable(
   ${NAME}
   main.cpp
 
+  Util.h
+  Util.cpp
+
   MainWindow.h
   MainWindow.cpp  
   )
