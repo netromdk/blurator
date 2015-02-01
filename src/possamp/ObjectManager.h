@@ -20,6 +20,8 @@ public:
 
   bool hasObjects() const { return !objects.isEmpty(); }
   const QMap<QString, QList<QRect> > &getObjects() const { return objects; }
+  QList<QRect> getObjects(const QString &file) const;
+
   QString determineFolder() const;
 
 private:
