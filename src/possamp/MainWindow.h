@@ -9,10 +9,11 @@
 #include "Global.h"
 #include "ObjectManager.h"
 
-class QLabel;
 class QListWidget;
 
 B_BEGIN_NAMESPACE
+
+class ImageWidget;
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -25,6 +26,7 @@ protected:
 
 private slots:
   void onImageSelected();
+  void onObjectSelected();
 
 private:
   void setupLayout();
@@ -37,7 +39,7 @@ private:
   std::shared_ptr<ObjectManager> objMgr;
 
   QListWidget *imgList, *objList;
-  QLabel *imgView;
+  ImageWidget *imgView;
 };
 
 B_END_NAMESPACE
