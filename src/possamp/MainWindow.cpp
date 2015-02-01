@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QWidget>
 #include <QMenuBar>
+#include <QKeyEvent>
 #include <QScrollArea>
 #include <QMessageBox>
 #include <QVBoxLayout>
@@ -31,6 +32,20 @@ void MainWindow::showEvent(QShowEvent *event) {
     first = false;
     askForFiles();
   }
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
+  if (obj == objList && event->type() == QEvent::KeyPress) {
+    QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+    switch (keyEvent->key()) {
+    case Qt::Key_Backspace:
+    case Qt::Key_Delete:
+      onRemoveCurrentObject();
+      return true;
+    }
+  }
+
+  return QObject::eventFilter(obj, event);
 }
 
 void MainWindow::onImageSelected() {
@@ -65,6 +80,17 @@ void MainWindow::onSave() {
   qDebug() << "Saved:" << objMgr->save();
 }
 
+void MainWindow::onRemoveCurrentObject() {
+  auto items = objList->selectedItems();
+  if (items.isEmpty()) return;
+
+  foreach (auto *item, items) {
+    objMgr->removeObject(curFile, item->data(Qt::UserRole).toRect());
+  }
+  loadObjects(curFile);
+  imgView->clear();
+}
+
 void MainWindow::setupLayout() {
   const int listWidth = 200;
 
@@ -76,6 +102,7 @@ void MainWindow::setupLayout() {
   objList = new QListWidget;
   objList->setFixedWidth(listWidth);
   objList->setSelectionMode(QAbstractItemView::ExtendedSelection);
+  objList->installEventFilter(this);
   connect(objList, &QListWidget::itemSelectionChanged,
           this, &MainWindow::onObjectSelected);
 

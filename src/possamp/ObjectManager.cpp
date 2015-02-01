@@ -95,6 +95,11 @@ void ObjectManager::addObject(const QString &file, const QRect &object) {
   objs.append(object);
 }
 
+void ObjectManager::removeObject(const QString &file, const QRect &object) {
+  auto &objs = objects[file];
+  objs.removeAll(object);
+}
+
 QList<QRect> ObjectManager::getObjects(const QString &file) const {
   return objects[file];
 }
