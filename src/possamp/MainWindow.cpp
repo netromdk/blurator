@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QLabel>
 #include <QWidget>
+#include <QMenuBar>
 #include <QScrollArea>
 #include <QMessageBox>
 #include <QVBoxLayout>
@@ -20,6 +21,7 @@ B_BEGIN_NAMESPACE
 MainWindow::MainWindow() {
   setWindowTitle(tr("Positive Samples Preparation Tool"));
   setupLayout();
+  setupMenu();
   resize(800, 500);
 }
 
@@ -59,6 +61,10 @@ void MainWindow::onNewObject(QRect object) {
   objList->setCurrentRow(objList->count() - 1);
 }
 
+void MainWindow::onSave() {
+  qDebug() << "Saved:" << objMgr->save();
+}
+
 void MainWindow::setupLayout() {
   const int listWidth = 200;
 
@@ -94,6 +100,11 @@ void MainWindow::setupLayout() {
   w->setLayout(layout);
 
   setCentralWidget(w);
+}
+
+void MainWindow::setupMenu() {
+  auto *fileMenu = menuBar()->addMenu(tr("File"));
+  fileMenu->addAction(tr("Save"), this, SLOT(onSave()), QKeySequence::Save);
 }
 
 void MainWindow::askForFiles() {

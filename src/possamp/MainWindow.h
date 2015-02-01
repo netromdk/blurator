@@ -28,9 +28,11 @@ private slots:
   void onImageSelected();
   void onObjectSelected();
   void onNewObject(QRect object);
+  void onSave();
 
 private:
   void setupLayout();
+  void setupMenu();
   void askForFiles();
   void loadItems();
   void loadObjects(const QString &file);
