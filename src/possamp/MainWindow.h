@@ -14,8 +14,12 @@ class MainWindow : public QMainWindow {
 public:
   MainWindow();
 
+protected:
+  void showEvent(QShowEvent *event);
+
 private:
   void setupLayout();
+  void askForFiles();
 };
 
 B_END_NAMESPACE
