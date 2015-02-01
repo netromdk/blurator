@@ -7,6 +7,9 @@ add_executable(
   Util.h
   Util.cpp
 
+  ObjectManager.h
+  ObjectManager.cpp
+
   MainWindow.h
   MainWindow.cpp  
   )

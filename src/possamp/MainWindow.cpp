@@ -72,15 +72,16 @@ void MainWindow::askForFiles() {
     }
   }
 
+  objMgr.reset(new ObjectManager(file));
+
   // Read and parse file.
   if (!isNew) {
-    QMap<QString, QList<QRect> > results;
-    if (!Util::parseDataFile(file, results)) {
+    if (!objMgr->load()) {
       QMessageBox::warning(this, tr("Invalid data file"),
                            tr("Data file was either invalid or empty."));
       return;
     }
-    qDebug() << "RESULTS:" << results;
+    qDebug() << "RESULTS:" << objMgr->getObjects();
   }
 }
 
