@@ -33,7 +33,7 @@ private:
   void loadObjects(const QString &file);
   void loadImage(const QString &path);
 
-  QString samplesRoot;
+  QString root, samplesSub, samplesRoot;
   std::shared_ptr<ObjectManager> objMgr;
 
   QListWidget *imgList, *objList;

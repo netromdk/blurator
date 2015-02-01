@@ -36,7 +36,7 @@ void MainWindow::onImageSelected() {
   QString file = itm->text();
   loadObjects(file);
 
-  QString path = QDir(samplesRoot).absoluteFilePath(file);
+  QString path = QDir(root).absoluteFilePath(file);
   loadImage(path);
 }
 
@@ -71,8 +71,11 @@ void MainWindow::setupLayout() {
 
 void MainWindow::askForFiles() {
   QString file =
+    "/Users/netrom/Downloads/face_training/face.dat";
+    /*
     QFileDialog::getOpenFileName(this, tr("Choose data file"), QDir::homePath(),
                                  "*.dat");
+    */
 
   // If cancelled then ask to quit or create new file.
   bool isNew = false;
@@ -107,7 +110,9 @@ void MainWindow::askForFiles() {
     qDebug() << "RESULTS:" << objMgr->getObjects();
   }
 
-  samplesRoot = objMgr->determineFolder();
+  root = objMgr->determineFolder(samplesSub);
+  samplesRoot = QDir(root).absoluteFilePath(samplesSub);
+    
   if (samplesRoot.isEmpty()) {
     samplesRoot =
       QFileDialog::getExistingDirectory(this, tr("Choose samples image root"),
@@ -126,9 +131,14 @@ void MainWindow::loadItems() {
   imgList->clear();
   objList->clear();
 
-  foreach (const QString &file, objMgr->getObjects().keys()) {
-    imgList->addItem(file);
-  }
+  foreach (const QString &file, Util::getImages(samplesRoot)) {
+    if (samplesSub.isEmpty()) {
+      imgList->addItem(file);
+    }
+    else {
+      imgList->addItem(QString("%1/%2").arg(samplesSub).arg(file));
+    }
+  }  
 }
 
 void MainWindow::loadObjects(const QString &file) {

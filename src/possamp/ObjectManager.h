@@ -22,7 +22,7 @@ public:
   const QMap<QString, QList<QRect> > &getObjects() const { return objects; }
   QList<QRect> getObjects(const QString &file) const;
 
-  QString determineFolder() const;
+  QString determineFolder(QString &subDir) const;
 
 private:
   QString file;
