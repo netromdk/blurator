@@ -35,10 +35,10 @@ void MainWindow::onImageSelected() {
   QListWidgetItem *itm = imgList->currentItem();
   if (!itm) return;
 
-  QString file = itm->text();
-  loadObjects(file);
+  curFile = itm->text();
+  loadObjects(curFile);
 
-  QString path = QDir(root).absoluteFilePath(file);
+  QString path = QDir(root).absoluteFilePath(curFile);
   loadImage(path);
 }
 
@@ -48,6 +48,12 @@ void MainWindow::onObjectSelected() {
 
   QRect object = itm->data(Qt::UserRole).toRect();
   imgView->showObject(object);
+}
+
+void MainWindow::onNewObject(QRect object) {
+  objMgr->addObject(curFile, object);
+  loadObjects(curFile);
+  objList->setCurrentRow(objList->count() - 1);
 }
 
 void MainWindow::setupLayout() {
@@ -64,6 +70,7 @@ void MainWindow::setupLayout() {
           this, &MainWindow::onObjectSelected);
 
   imgView = new ImageWidget;
+  connect(imgView, &ImageWidget::newObject, this, &MainWindow::onNewObject);
 
   auto *scrollArea = new QScrollArea;
   scrollArea->setBackgroundRole(QPalette::Dark);
