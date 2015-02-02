@@ -105,7 +105,17 @@ QRect ImageWidget::getCurObject() const {
     x2 = curPos.x(), y2 = curPos.y();
   if (x2 < x) qSwap(x, x2);
   if (y2 < y) qSwap(y, y2);
-  return QRect(x, y, x2 - x, y2 - y);
+  if (x < 0) x = 0;
+  if (y < 0) y = 0;
+  int w = x2 - x;
+  int h = y2 - y;
+  if (x + w > image.width()) {
+    w = image.width() - x;
+  }
+  if (y + h > image.height()) {
+    h = image.height() - y;
+  }
+  return QRect(x, y, w, h);
 }
 
 void ImageWidget::drawObject(QPainter &painter, const QRect &object) {
