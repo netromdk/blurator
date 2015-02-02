@@ -16,12 +16,20 @@ ImageWidget::ImageWidget() : zoomFactor(1), zoomSet(false) { }
 
 void ImageWidget::loadImage(const QString &path) {
   image = origImage = QImage(path);
-  resize(image.size());
+  if (zoomSet) {
+    setZoom(zoomFactor);
+  }
+  else {
+    resize(image.size());
+  }
 }
 
 void ImageWidget::setZoom(float factor) {
   zoomFactor = factor;
   zoomSet = true;
+  if (origImage.isNull()) {
+    return;
+  }
   image = origImage.scaledToWidth(float(origImage.width()) * factor);
   resize(image.size());
   update();
@@ -30,6 +38,9 @@ void ImageWidget::setZoom(float factor) {
 void ImageWidget::resetZoom() {
   zoomFactor = 1.0;
   zoomSet = false;
+  if (origImage.isNull()) {
+    return;
+  }
   image = origImage;
   resize(image.size());
   update();

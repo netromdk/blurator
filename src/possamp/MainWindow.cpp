@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QMenuBar>
 #include <QKeyEvent>
+#include <QComboBox>
 #include <QScrollArea>
 #include <QMessageBox>
 #include <QVBoxLayout>
@@ -91,6 +92,10 @@ void MainWindow::onRemoveCurrentObject() {
   imgView->clear();
 }
 
+void MainWindow::onZoomChanged(int index) {
+  imgView->setZoom(zoomBox->itemData(index).toFloat());
+}
+
 void MainWindow::setupLayout() {
   const int listWidth = 200;
 
@@ -113,15 +118,35 @@ void MainWindow::setupLayout() {
   scrollArea->setBackgroundRole(QPalette::Dark);
   scrollArea->setWidget(imgView);
 
+  zoomBox = new QComboBox;
+  for (int i = 25; i <= 100; i += 25) {
+    zoomBox->addItem(QString("%1%").arg(i), float(i) / 100.0);
+  }
+  for (int i = 200; i <= 800; i *= 2) {
+    zoomBox->addItem(QString("%1%").arg(i), float(i) / 100.0);
+  }
+  zoomBox->setCurrentIndex(3); // 100 %
+  connect(zoomBox, SIGNAL(currentIndexChanged(int)),
+          this, SLOT(onZoomChanged(int)));
+
   QVBoxLayout *listLayout = new QVBoxLayout;
   listLayout->addWidget(new QLabel(tr("Images")));
   listLayout->addWidget(imgList);
   listLayout->addWidget(new QLabel(tr("Objects")));
   listLayout->addWidget(objList);
+
+  QHBoxLayout *zoomLayout = new QHBoxLayout;
+  zoomLayout->addWidget(new QLabel(tr("Zoom")+":"));
+  zoomLayout->addWidget(zoomBox);
+  zoomLayout->addStretch();
+
+  QVBoxLayout *imageLayout = new QVBoxLayout;
+  imageLayout->addLayout(zoomLayout);
+  imageLayout->addWidget(scrollArea);
   
   QHBoxLayout *layout = new QHBoxLayout;
   layout->addLayout(listLayout);
-  layout->addWidget(scrollArea);
+  layout->addLayout(imageLayout);
 
   QWidget *w = new QWidget;
   w->setLayout(layout);
