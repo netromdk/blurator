@@ -9,6 +9,7 @@
 #include "Global.h"
 #include "ObjectManager.h"
 
+class QComboBox;
 class QListWidget;
 
 B_BEGIN_NAMESPACE
@@ -31,6 +32,7 @@ private slots:
   void onNewObject(QRect object);
   void onSave();
   void onRemoveCurrentObject();
+  void onZoomChanged(int index);
 
 private:
   void setupLayout();
@@ -45,6 +47,7 @@ private:
 
   QListWidget *imgList, *objList;
   ImageWidget *imgView;
+  QComboBox *zoomBox;
 };
 
 B_END_NAMESPACE
