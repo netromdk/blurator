@@ -17,7 +17,12 @@ class ImageWidget : public QWidget {
   Q_OBJECT
 
 public:
+  ImageWidget();
+
   void loadImage(const QString &path);
+  void setZoom(float factor);
+  void resetZoom();
+
   void showObject(const QRect &object);
   void showObjects(const QList<QRect> &objects);
   void clear();
@@ -37,7 +42,9 @@ private:
 
   QPoint startPos, curPos;
   QList<QRect> curObjects;
-  QImage image;
+  QImage image, origImage;
+  float zoomFactor;
+  bool zoomSet;
 };
 
 B_END_NAMESPACE
