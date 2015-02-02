@@ -77,6 +77,11 @@ public:
   static QString rectToStr(const QRect &rect);
 
   /**
+   * Scales the rect by the factor.
+   */
+  static QRect scaleRect(const QRect &rect, float factor);
+
+  /**
    * Search recursively for supported image files.
    */
   static QStringList getImages(const QString &folder);
