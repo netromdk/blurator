@@ -169,6 +169,13 @@ QString Util::rectToStr(const QRect &rect) {
     .arg(rect.x()).arg(rect.y()).arg(rect.width()).arg(rect.height());
 }
 
+QRect Util::scaleRect(const QRect &rect, float factor) {
+  return QRect(float(rect.x()) * factor,
+               float(rect.y()) * factor,
+               float(rect.width()) * factor,
+               float(rect.height()) * factor);
+}
+
 QStringList Util::getImages(const QString &folder) {
   QStringList images;
   foreach (const QFileInfo &entry,
