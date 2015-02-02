@@ -7,13 +7,32 @@
 #include <QVBoxLayout>
 #include <QMouseEvent>
 
+#include "Util.h"
 #include "ImageWidget.h"
 
 B_BEGIN_NAMESPACE
 
+ImageWidget::ImageWidget() : zoomFactor(1), zoomSet(false) { }
+
 void ImageWidget::loadImage(const QString &path) {
-  image = QImage(path);
+  image = origImage = QImage(path);
   resize(image.size());
+}
+
+void ImageWidget::setZoom(float factor) {
+  zoomFactor = factor;
+  zoomSet = true;
+  image = origImage.scaledToWidth(float(origImage.width()) * factor);
+  resize(image.size());
+  update();
+}
+
+void ImageWidget::resetZoom() {
+  zoomFactor = 1.0;
+  zoomSet = false;
+  image = origImage;
+  resize(image.size());
+  update();
 }
 
 void ImageWidget::showObject(const QRect &object) {
@@ -47,7 +66,8 @@ void ImageWidget::mouseMoveEvent(QMouseEvent *event) {
 void ImageWidget::mouseReleaseEvent(QMouseEvent *event) {
   QWidget::mouseReleaseEvent(event);
   if (!startPos.isNull() && !curPos.isNull() && startPos != curPos) {
-    emit newObject(getCurObject());
+    QRect obj = getCurObject();
+    emit newObject(zoomSet ? Util::scaleRect(obj, 1.0 / zoomFactor) : obj);
   }
   startPos = curPos = QPoint();
   update();
@@ -60,7 +80,8 @@ void ImageWidget::paintEvent(QPaintEvent *event) {
   painter.drawImage(QPoint(0, 0), image);
 
   foreach (const QRect &object, curObjects) {
-    drawObject(painter, object);
+    drawObject(painter,
+               (zoomSet ? Util::scaleRect(object, zoomFactor) : object));
   }
 
   if (!startPos.isNull() && !curPos.isNull() && startPos != curPos) {
