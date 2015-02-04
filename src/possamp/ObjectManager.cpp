@@ -78,6 +78,9 @@ bool ObjectManager::save() {
 
   foreach (const QString &itm, objects.keys()) {
     const auto &rects = objects[itm];
+    if (rects.size() == 0) {
+      continue;
+    }
     QString line = QString("%1 %2 ").arg(itm).arg(rects.size());
     foreach (const QRect &rect, rects) {
       line += QString("%1 %2 %3 %4 ")
