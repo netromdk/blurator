@@ -10,7 +10,6 @@
 #include "Global.h"
 
 class QImage;
-class QString;
 class QByteArray;
 
 B_BEGIN_NAMESPACE
@@ -70,21 +69,6 @@ public:
    * Blur each face in an image.
    */
   static void blurFaces(MatPtr image, const std::vector<cv::Rect> &faces);
-
-  /**
-   * Represent rect as string.
-   */
-  static QString rectToStr(const QRect &rect);
-
-  /**
-   * Scales the rect by the factor.
-   */
-  static QRect scaleRect(const QRect &rect, float factor);
-
-  /**
-   * Search recursively for supported image files.
-   */
-  static QStringList getImages(const QString &folder);
 };
 
 B_END_NAMESPACE

@@ -1,6 +1,5 @@
 # Static library for test cases.
-include_directories(../src/core)
-include_directories(../src/blurator)
+include_directories(../src)
 
 set(LIBNAME "testlib")
 add_library(
@@ -10,15 +9,13 @@ add_library(
   Test.h
   Test.cpp
 
-  ../src/blurator/Detector.h
-  ../src/blurator/Detector.cpp
+  ../src/Util.h
+  ../src/Util.cpp
 
-  ../src/blurator/res.qrc
-  )
+  ../src/Detector.h
+  ../src/Detector.cpp
 
-target_link_libraries(
-  ${LIBNAME}
-  core
+  ../src/res.qrc
   )
 
 set_blurator_links(${LIBNAME})

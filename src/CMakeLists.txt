@@ -1,6 +1,14 @@
-add_subdirectory(core)
-add_subdirectory(blurator)
+add_executable(
+  ${PROJECT_NAME}
+  main.cpp
 
-if (${ENABLE_POSSAMP} MATCHES "YES")
-  add_subdirectory(possamp)
-endif()
+  Util.h
+  Util.cpp
+
+  Detector.h
+  Detector.cpp
+
+  res.qrc
+  )
+
+set_blurator_links(${PROJECT_NAME})
