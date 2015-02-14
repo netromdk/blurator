@@ -52,9 +52,21 @@ add_blurator_test(
   )
 
 add_blurator_test(
+  TestFaceDetectorNullImage
+  ${LIBNAME}
+  TestFaceDetectorNullImage.cpp
+  )
+
+add_blurator_test(
   TestFaceDetectorEmptyImage
   ${LIBNAME}
   TestFaceDetectorEmptyImage.cpp
+  )
+
+add_blurator_test(
+  TestPlateDetectorNullImage
+  ${LIBNAME}
+  TestPlateDetectorNullImage.cpp
   )
 
 add_blurator_test(
