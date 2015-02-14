@@ -156,9 +156,9 @@ void Util::blurRegion(MatPtr image, cv::Rect region, cv::Size ksize) {
   cv::blur(sub, sub, ksize);
 }
 
-void Util::blurFaces(MatPtr image, const std::vector<cv::Rect> &faces) {
-  foreach (const cv::Rect &face, faces) {
-    blurRegion(image, face);
+void Util::blurRegions(MatPtr image, const std::vector<cv::Rect> &regions) {
+  foreach (const cv::Rect &region, regions) {
+    blurRegion(image, region);
   }
 }
 

@@ -18,10 +18,11 @@ public:
   bool isValid() const { return valid; }
 
   std::vector<cv::Rect> detectFaces(const MatPtr image);
+  std::vector<cv::Rect> detectPlates(const MatPtr image);
 
 private:
   bool valid;
-  cv::CascadeClassifier faceCas;
+  cv::CascadeClassifier faceCas, plateCas;
 };
 
 B_END_NAMESPACE
