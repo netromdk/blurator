@@ -152,68 +152,66 @@ int main(int argc, char **argv) {
   QDateTime startDate = QDateTime::currentDateTime();
 
   const int size = images.size();
-  qint64 faceCnt = 0, faceTot = 0;
+  qint64 faceCnt = 0, faceTot = 0, plateCnt = 0, plateTot = 0;
+  std::vector<cv::Rect> faces, plates;
   for (int i = 0; i < size; i++) {
     const QString &path = images[i];
 
-    if (dFaces) {
-      QFile f(path);
-      if (!f.open(QIODevice::ReadOnly)) {
-        qCritical() << "Could not read from image file!";
-        return -1;
-      }
-      QByteArray imageData = f.readAll();
-      f.close();
-
-      MatPtr image = Util::imageToMat(imageData);
-      if (image == nullptr) {
-        qCritical() << "Invalid image!";
-        return -1;
-      }
-
-      auto faces = detector.detectFaces(image);
-      faceCnt = faces.size();
-
-      if (faces.empty()) {
-        goto updateProgress;
-      }
-
-      faceTot += faceCnt;
-
-      // Blur each of the faces.
-      if (!faces.empty()) {
-        // Save original to backup file.
-        if (!noBackup) {
-          QString bpath = Util::getBackupPath(path);
-          if (!QFile::copy(path, bpath)) {
-            qWarning() << "Could not save backup:" << bpath;
-            if (!Util::askProceed("Do you want to proceed?", autoReplyYes.get())) {
-              qWarning() << "Aborting..";
-              return -1;
-            }
-          }
-        }
-
-        Util::blurFaces(image, faces);
-        QImage res;
-        if (Util::matToImage(image, res)) {
-          if (!res.save(path)) {
-            qCritical() << "Could not save blurred image!";
-          }
-        }
-        else {
-          qCritical() << "Could not convert mat to image!";
-        }
-      }
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly)) {
+      qCritical() << "Could not read from image file!";
+      return -1;
     }
+    QByteArray imageData = f.readAll();
+    f.close();
 
-    // TODO: Plate detection
-    if (dPlates) {
-      qCritical() << "Plate detection not implemented yet!";
+    MatPtr image = Util::imageToMat(imageData);
+    if (image == nullptr) {
+      qCritical() << "Invalid image!";
       return -1;
     }
 
-  updateProgress:
+    if (dFaces) {
+      faces = detector.detectFaces(image);
+      faceCnt = faces.size();
+      faceTot += faceCnt;
+    }
+
+    if (dPlates) {
+      plates = detector.detectPlates(image);
+      plateCnt = plates.size();
+      plateTot += plateCnt;
+    }
+
+    if (faceCnt > 0 || plateCnt > 0) {
+      // Save original to backup file.
+      if (!noBackup) {
+        QString bpath = Util::getBackupPath(path);
+        if (!QFile::copy(path, bpath)) {
+          qWarning() << "Could not save backup:" << bpath;
+          if (!Util::askProceed("Do you want to proceed?", autoReplyYes.get())) {
+            qWarning() << "Aborting..";
+            return -1;
+          }
+        }
+      }
+
+      // Blur each of the regions detected.
+      Util::blurRegions(image, faces);
+      Util::blurRegions(image, plates);
+
+      QImage res;
+      if (Util::matToImage(image, res)) {
+        if (!res.save(path)) {
+          qCritical() << "Could not save blurred image!";
+        }
+      }
+      else {
+        qCritical() << "Could not convert mat to image!";
+      }
+    }
+
+    // Update progress information.
     static int lastLen = 0;
     static const QString nw("\033[0;37m"); // normal and white
     static const QString bw("\033[1;37m"); // bold and white
@@ -228,12 +226,13 @@ int main(int argc, char **argv) {
 
     QString line1;
     if (verbose) {
-      line1 = QString("Processed %1: %2 faces").arg(path).arg(faceCnt);
+      line1 = QString("Processed %1: %2 faces, %3 plates")
+        .arg(path).arg(faceCnt).arg(plateCnt);
     }
 
-    QString line2 = QString("[ %1%2%%3 (%4/%5) | %6%7 faces blurred%8 | %9 %10 ]")
+    QString line2 = QString("[ %1%2%%3 (%4/%5) | %6blurred %7 faces, %8 plates%9 | %10 %11 ]")
       .arg(bw).arg(progress, 0, 'f', 1).arg(nw).arg(i+1).arg(size)
-      .arg(bw).arg(faceTot).arg(nw)
+      .arg(bw).arg(faceTot).arg(plateTot).arg(nw)
       .arg(!last ? Util::formatTime(left) : Util::formatTime(elapsed))
       .arg(!last ? "left" : "elapsed");
 

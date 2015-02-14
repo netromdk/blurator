@@ -66,9 +66,9 @@ public:
                          cv::Size ksize = cv::Size(50, 50));
 
   /**
-   * Blur each face in an image.
+   * Blur each region in an image.
    */
-  static void blurFaces(MatPtr image, const std::vector<cv::Rect> &faces);
+  static void blurRegions(MatPtr image, const std::vector<cv::Rect> &regions);
 };
 
 B_END_NAMESPACE

@@ -1,7 +1,7 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
   <qresource>
-    <file alias="res/face.xml">res/lbpcascade_frontalface.xml</file>
+    <file alias="res/faces.xml">res/lbpcascade_frontalface.xml</file>
     <file>res/plates.xml</file>
   </qresource>
 </RCC>
