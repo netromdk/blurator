@@ -1,8 +1,5 @@
-#include <QImage>
-
 #include "Test.h"
 
-#include "Util.h"
 #include "Detector.h"
 B_USE_NAMESPACE
 
@@ -15,13 +12,6 @@ int main() {
     return FAIL;
   }
 
-  QImage image(256, 256, QImage::Format_RGB888);
-  MatPtr mat = Util::imageToMat(image);
-  if (!mat) {
-    qCritical() << "mat is null!";
-    return FAIL;
-  }
-
-  auto plates = detector.detectPlates(mat);
+  auto plates = detector.detectPlates(nullptr);
   return (plates.empty() ? PASS : FAIL);
 }
