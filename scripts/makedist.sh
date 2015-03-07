@@ -7,6 +7,7 @@ DIST_BASE=`eval basename ${DIST_DIR}`
 DIST_BASE=`echo ${DIST_BASE} | sed 's/ /\\\\ /g'`
 ZIP_DIST=`echo $3 | sed 's/ /\\\\ /g'`
 PY_EXEC=`echo $4 | sed 's/ /\\\\ /g'`
+QT_PLUGINS=`echo $5 | sed 's/ /\\\\ /g'`
 
 eval mkdir -p ${DIST_DIR}
 BINARY_IN=${BIN_DIR}/blurator
@@ -20,6 +21,16 @@ if [ ! $? -eq 0 ]; then
 fi
 
 chmod +x ${BINARY_OUT}
+
+# Copy Qt plugins.
+eval mkdir -p ${DIST_DIR}/imageformats
+eval cp ${QT_PLUGINS}/imageformats/libqjpeg.dylib \
+     ${QT_PLUGINS}/imageformats/libqgif.dylib \
+     ${QT_PLUGINS}/imageformats/libqtiff.dylib \
+     ${DIST_DIR}/imageformats/
+for plugin in ${DIST_DIR}/imageformats/*; do
+    eval ${PY_EXEC} scripts/fix_binary.py ${plugin}
+done
 
 # Create zip file.
 eval echo "Creating zip file: ${ZIP_DIST}"
