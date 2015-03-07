@@ -35,7 +35,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
   else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
   endif()
-elseif (MSVC AND MSVC12)
+elseif (MSVC AND (MSVC11 OR MSVC12 OR MSVC13))
   # C++11 support is implicitly enabled.
 else()
   message(FATAL_ERROR "Your compiler does not support C++11 - aborting!")
