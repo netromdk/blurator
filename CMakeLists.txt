@@ -12,7 +12,7 @@ set(CMAKE_MODULE_PATH
   )
 
 if (NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE MinSizeRel) 
+  set(CMAKE_BUILD_TYPE Release)
 endif()
 
 # Find current version from source code.
