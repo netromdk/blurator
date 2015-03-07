@@ -32,6 +32,15 @@ void msgHandler(QtMsgType type, const QMessageLogContext &ctx,
                 const QString &msg);
 
 int main(int argc, char **argv) {
+  // If "imageformats" is located locally then reset paths to be the
+  // application folder. Otherwise, leave it with default values so it
+  // finds the system plugins.
+  QDir appDir =
+    QDir::current().absoluteFilePath(QFileInfo(argv[0]).dir().absolutePath());
+  if (appDir.exists("imageformats")) {
+    QCoreApplication::setLibraryPaths(QStringList() << appDir.absolutePath());
+  }
+
 	QCoreApplication app(argc, argv);
 	QCoreApplication::setApplicationName("Blurator");
 	QCoreApplication::setApplicationVersion(versionString());
