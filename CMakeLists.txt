@@ -65,7 +65,8 @@ if (APPLE OR LINUX)
   add_custom_command(
     TARGET dist
     POST_BUILD
-    COMMAND scripts/makedist.sh ${BIN_DIR} ${DIST_DIR} ${ZIP_DIST} ${PYTHON_EXECUTABLE}
+    COMMAND scripts/makedist.sh
+      ${BIN_DIR} ${DIST_DIR} ${ZIP_DIST} ${PYTHON_EXECUTABLE} ${QT_PLUGINS}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endif()
@@ -75,5 +76,6 @@ message(STATUS "BUILD: ${CMAKE_BUILD_TYPE}")
 message(STATUS "VERSION: ${VERSION_NUMBER}")
 message(STATUS "Building tests: ${ENABLE_TESTING}")
 message(STATUS "Using C++11 features")
+message(STATUS "Qt plugins: ${QT_PLUGINS}")
 message(STATUS "Python: ${PYTHON_EXECUTABLE}")
 message(STATUS "--------------------------------------------------")

@@ -30,6 +30,8 @@ find_path(
 
 if (${QT_PLUGINS} MATCHES "NOTFOUND")
   message(FATAL_ERROR "Could not find Qt plugins folder!")
+else()
+  SET(QT_PLUGINS "${QT_PLUGINS}/plugins/")
 endif()
 
 # OpenCV
