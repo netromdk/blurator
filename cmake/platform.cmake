@@ -8,3 +8,7 @@ endif()
 if (LINUX)
   include(linux)
 endif()
+
+if (WIN32)
+  include(win)
+endif()
