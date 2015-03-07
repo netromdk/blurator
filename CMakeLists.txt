@@ -44,9 +44,36 @@ if (${ENABLE_TESTING} MATCHES "YES")
   add_subdirectory(test)
 endif()
 
+# Distribution
+include(python)
+add_custom_target(
+  dist
+  DEPENDS blurator
+  COMMENT "Creating distribution"
+  )
+if (APPLE)
+  set(ARCH "mac64")
+elseif (WIN32)
+  set(ARCH "win64")
+elseif (LINUX)
+  set(ARCH "linux64")
+endif()
+set(DIST_DIR "${BIN_DIR}/${PROJECT_NAME}_${ARCH}_${VERSION_NUMBER}")
+set(ZIP_FILE "${PROJECT_NAME}_${ARCH}_${VERSION_NUMBER}.zip")
+set(ZIP_DIST "${BIN_DIR}/${ZIP_FILE}")
+if (APPLE OR LINUX)
+  add_custom_command(
+    TARGET dist
+    POST_BUILD
+    COMMAND scripts/makedist.sh ${BIN_DIR} ${DIST_DIR} ${ZIP_DIST} ${PYTHON_EXECUTABLE}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+endif()
+
 message(STATUS "--------------------------------------------------")
 message(STATUS "BUILD: ${CMAKE_BUILD_TYPE}")
 message(STATUS "VERSION: ${VERSION_NUMBER}")
 message(STATUS "Building tests: ${ENABLE_TESTING}")
 message(STATUS "Using C++11 features")
+message(STATUS "Python: ${PYTHON_EXECUTABLE}")
 message(STATUS "--------------------------------------------------")
