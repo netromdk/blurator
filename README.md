@@ -7,7 +7,7 @@ Requirements
 ============
 
 A C++11 compliant compiler (GCC 4.7+, Clang 3.3+ etc.), CMake 3+,
-Qt 5.3+ and OpenCV 2.4+.
+Qt 5.3+, OpenCV 2.4+, and Python 3+.
 
 Compilation
 ===========
