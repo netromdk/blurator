@@ -112,12 +112,12 @@ QString Util::getBackupPath(const QString &path) {
 
 bool Util::isSupportedImage(const QString &path) {
   static const QStringList exts =
-    QStringList{"jpg", "jpeg", "png", "tif", "tiff"};
+    QStringList() << "jpg" << "jpeg" << "png" << "tif" << "tiff";
   return exts.contains(QFileInfo(path).suffix().toLower());
 }
 
 QString Util::formatTime(qint64 msecs) {
-  constexpr qint64 Second = 1000, Minute = Second * 60, Hour = Minute * 60,
+  const qint64 Second = 1000, Minute = Second * 60, Hour = Minute * 60,
     Day = Hour * 24, Week = Day * 7;
   QString res;
   if (msecs >= Week) {
