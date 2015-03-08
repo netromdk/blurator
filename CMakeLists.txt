@@ -70,6 +70,7 @@ if (APPLE OR LINUX)
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 else()
+  include(java)
   add_custom_command(
     TARGET dist
     POST_BUILD

@@ -11,5 +11,4 @@ endif()
 
 if (WIN32)
   include(win)
-  include(java)
 endif()
