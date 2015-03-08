@@ -14,10 +14,6 @@ SET dist_dir=!dist_dir:\\=\!
 SET zip_dist=!zip_dist:/=\!
 SET zip_dist=!zip_dist:\\=\!
 
-echo "!bin_dir!"
-echo "!dist_dir!"
-echo "!zip_dist!"
-
 :: Copy files/folders
 echo "Copying files.."
 rmdir /S /Q "!dist_dir!"
