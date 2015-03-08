@@ -45,7 +45,6 @@ if (${ENABLE_TESTING} MATCHES "YES")
 endif()
 
 # Distribution
-include(python)
 add_custom_target(
   dist
   DEPENDS blurator
@@ -62,6 +61,7 @@ set(DIST_DIR "${BIN_DIR}/${PROJECT_NAME}_${ARCH}_${VERSION_NUMBER}")
 set(ZIP_FILE "${PROJECT_NAME}_${ARCH}_${VERSION_NUMBER}.zip")
 set(ZIP_DIST "${BIN_DIR}/${ZIP_FILE}")
 if (APPLE OR LINUX)
+  include(python)
   add_custom_command(
     TARGET dist
     POST_BUILD
@@ -84,7 +84,9 @@ message(STATUS "VERSION: ${VERSION_NUMBER}")
 message(STATUS "Building tests: ${ENABLE_TESTING}")
 message(STATUS "Using C++11 features")
 message(STATUS "Qt plugins: ${QT_PLUGINS}")
-message(STATUS "Python: ${PYTHON_EXECUTABLE}")
+if (PYTHON_EXECUTABLE)
+  message(STATUS "Python: ${PYTHON_EXECUTABLE}")
+endif()
 if (JAR_EXECUTABLE)
   message(STATUS "Jar: ${JAR_EXECUTABLE}")
 endif()
