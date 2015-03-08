@@ -27,6 +27,9 @@ This produces the release version binary in the *bin* folder: blurator
 For debugging purposes swap out the `cmake ..` command with `cmake
 -DCMAKE_BUILD_TYPE=Debug ..`.
 
+On Windows Qt requires ICU in most cases so define `-DICU_BIN_DIR=<path>`
+when invoking cmake. If you compiled Qt without ICU then you can use `-DNO_ICU=1`.
+
 Testing
 =======
 
