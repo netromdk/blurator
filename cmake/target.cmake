@@ -1,6 +1,10 @@
 set(BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}/bin")
 set(LIB_DIR "${CMAKE_CURRENT_BINARY_DIR}/lib")
 
+if (WIN32)
+  set(WIN_BIN_DIR "${BIN_DIR}/${CMAKE_BUILD_TYPE}")
+endif()
+
 file(
   MAKE_DIRECTORY
   ${BIN_DIR}
