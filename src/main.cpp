@@ -222,10 +222,15 @@ int main(int argc, char **argv) {
 
     // Update progress information.
     static int lastLen = 0;
+    float progress = float(i+1) / float(size) * 100.0;
+
+    // Use term color codes when supported.
+#ifndef WIN
     static const QString nw("\033[0;37m"); // normal and white
     static const QString bw("\033[1;37m"); // bold and white
-
-    float progress = float(i+1) / float(size) * 100.0;
+#else
+    static const QString nw, bw;
+#endif
 
     QDateTime now = QDateTime::currentDateTime();
     qint64 elapsed = startDate.msecsTo(now);
@@ -248,16 +253,20 @@ int main(int argc, char **argv) {
     QString msg =
       QString("%1%2%3").arg(nw).arg(verbose ? QString("%1\n").arg(line1) : "").arg(line2);
 
-    // Rewind to beginning and output message. If at second line or
+    // Not Windows: Rewind to beginning and output message. If at second line or
     // latter then overwrite everything with empty spaces to "blank"
     // out so no traces are left if the new lines are longer than
     // the last ones.
     {
       using namespace std;
+#ifndef WIN
       cout << '\r';
       if (i > 0) {
         cout << QString(lastLen, ' ').toStdString() << '\r';
       }
+#else
+      msg += "\r\n";
+#endif
       cout << msg.toStdString();
       cout.flush();
     }
