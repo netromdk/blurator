@@ -61,7 +61,9 @@ set(DIST_DIR "${BIN_DIR}/${PROJECT_NAME}_${ARCH}_${VERSION_NUMBER}")
 set(ZIP_FILE "${PROJECT_NAME}_${ARCH}_${VERSION_NUMBER}.zip")
 set(ZIP_DIST "${BIN_DIR}/${ZIP_FILE}")
 if (APPLE OR LINUX)
-  include(python)
+  if (APPLE)
+    include(python)
+  endif()
   add_custom_command(
     TARGET dist
     POST_BUILD
