@@ -69,6 +69,13 @@ if (APPLE OR LINUX)
       ${BIN_DIR} ${DIST_DIR} ${ZIP_DIST} ${PYTHON_EXECUTABLE} ${QT_PLUGINS}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
+else()
+  add_custom_command(
+    TARGET dist
+    POST_BUILD
+    COMMAND scripts/makedist.bat ${WIN_BIN_DIR} ${DIST_DIR} ${ZIP_DIST}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 endif()
 
 message(STATUS "--------------------------------------------------")
