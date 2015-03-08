@@ -42,6 +42,22 @@ if (WIN32)
     DESTINATION ${QT_IMAGEFORMATS}
     )
 
+  # ICU DLLs
+  if (ICU_BIN_DIR)
+    file(
+      COPY "${ICU_BIN_DIR}/icuin53.dll"
+      DESTINATION ${WIN_BIN_DIR}
+      )
+    file(
+      COPY "${ICU_BIN_DIR}/icuuc53.dll"
+      DESTINATION ${WIN_BIN_DIR}
+      )
+    file(
+      COPY "${ICU_BIN_DIR}/icudt53.dll"
+      DESTINATION ${WIN_BIN_DIR}
+      )
+  endif()
+
   # OpenCV DLLs
   set(OpenCV_BIN_DIR "${_OpenCV_LIB_PATH}")
   file(

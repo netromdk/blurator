@@ -37,6 +37,14 @@ else()
   SET(QT_PLUGINS "${QT_PLUGINS}/plugins/")
 endif()
 
+# Win: Qt requires ICU so require path to DLLs.
+# Define NO_ICU to suppress this.
+if (WIN32 AND (NOT NO_ICU) AND (NOT ICU_BIN_DIR))
+  message("Could not find ICU!")
+  message("Please define -DICU_BIN_DIR=<PATH>")
+  message(FATAL_ERROR "Or suppress using -DNO_ICU=1")
+endif()
+
 # OpenCV
 if (WIN32)
   set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}
