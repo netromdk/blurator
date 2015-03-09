@@ -10,10 +10,11 @@ PY_EXEC=`echo $4 | sed 's/ /\\\\ /g'`
 QT_PLUGINS=`echo $5 | sed 's/ /\\\\ /g'`
 
 OS=`uname`
+BIN=blurator
 
 eval mkdir -p ${DIST_DIR}
-BINARY_IN=${BIN_DIR}/blurator
-BINARY_OUT=${DIST_DIR}/blurator
+BINARY_IN=${BIN_DIR}/${BIN}
+BINARY_OUT=${DIST_DIR}/${BIN}
 
 # Copy and manage dependencies.
 if [ ${OS} = "Darwin" ]; then
@@ -49,13 +50,15 @@ fi
 # On Linux do a shell script that sets LD_LIBRARY_PATH and runs the
 # binary.
 if [ ${OS} = "Linux" ]; then
-    eval mv ${BINARY_OUT} ${DIST_DIR}/_blurator
     (eval cd ${DIST_DIR};
-    cat >blurator <<EOF
-LD_LIBRARY_PATH="\${PWD}" "\${PWD}/_blurator" \$*
+     mv ${BIN} _${BIN}
+     patchelf --set-rpath "\$ORIGIN" _${BIN}
+     cat >${BIN} <<EOF
+#!/bin/sh
+LD_LIBRARY_PATH="\${PWD}" "\${PWD}/_${BIN}" \$*
 EOF
+     chmod +x ${BIN}
     )
-    eval chmod +x ${BINARY_OUT}
 fi
 
 # Create zip file.
