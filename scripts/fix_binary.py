@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
+import sys, os
 from util import *
 
 def usage():
@@ -11,5 +11,4 @@ if __name__ == "__main__":
         exit(-1)
 
     binary = sys.argv[1]
-    hasId = hasSuffix(binary)
-    localizeDep(binary, hasId)
+    localizeDep(binary)

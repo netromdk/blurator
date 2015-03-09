@@ -13,7 +13,7 @@ def checkIgnore(path):
 
 def cleanEntry(path):
     res = CLEAN_REGEX.findall(path.strip())
-    if len(res) == -1:
+    if len(res) == 0:
         return None
     res = res[0].strip()
     if checkIgnore(res):
@@ -43,7 +43,11 @@ def otoolChange(path, old, new):
 def fixEntry(entry):
     return "@executable_path/{}".format(os.path.basename(entry))
 
-def localizeDep(dep, hasId):
+def hasSuffix(path):
+    return len(os.path.splitext(path)[1]) > 0
+
+def localizeDep(dep):
+    hasId = hasSuffix(dep)
     [id, libs] = getIdLibs(dep, hasId)
     if id:
         otoolID(dep, fixEntry(id))
@@ -65,6 +69,3 @@ def getDeps(bin):
         dep = cleanEntry(dep)
         if dep: deps.append(dep)
     return deps
-
-def hasSuffix(path):
-    return len(os.path.splitext(path)[1]) > 0

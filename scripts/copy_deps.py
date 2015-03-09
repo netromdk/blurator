@@ -7,13 +7,12 @@ DEP_LIST = []
 def usage():
     print("usage: {} <binary> <dest>".format(sys.argv[0]))
 
-def handleDep(dep, dst, hasId = True):
-    bname = os.path.basename(dep)
-    if bname in DEP_LIST:
-        return
-    DEP_LIST.append(bname)
-        
+def handleDep(dep, dst):
     newfile = copy(dep, dst)
+
+    if newfile in DEP_LIST:
+        return
+    DEP_LIST.append(newfile)
 
     # Handle its deps
     deps = getDeps(newfile)
@@ -21,7 +20,7 @@ def handleDep(dep, dst, hasId = True):
         handleDep(dep_, dst)
 
     # Localize the dep's shared library paths to the executable path.
-    localizeDep(newfile, hasId)
+    localizeDep(newfile)
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
@@ -30,4 +29,7 @@ if __name__ == "__main__":
 
     dep = sys.argv[1]
     dst = sys.argv[2]
-    handleDep(dep, dst, False)
+    handleDep(dep, dst)
+
+    for dep in DEP_LIST:
+        localizeDep(dep)
