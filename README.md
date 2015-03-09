@@ -11,6 +11,8 @@ Qt 5.3+, and OpenCV 2.4+.
 
 Additional for Mac: Python 3+
 
+Additional for Linux: [patchelf](http://nixos.org/patchelf.html)
+
 Additional for Windows: Java (jar executable)
 
 Compilation
