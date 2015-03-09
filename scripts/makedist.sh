@@ -46,6 +46,18 @@ else
          ${DIST_DIR}/imageformats/
 fi
 
+# On Linux do a shell script that sets LD_LIBRARY_PATH and runs the
+# binary.
+if [ ${OS} = "Linux" ]; then
+    eval mv ${BINARY_OUT} ${DIST_DIR}/_blurator
+    (eval cd ${DIST_DIR};
+    cat >blurator <<EOF
+LD_LIBRARY_PATH="\${PWD}" "\${PWD}/_blurator" \$*
+EOF
+    )
+    eval chmod +x ${BINARY_OUT}
+fi
+
 # Create zip file.
 eval echo "Creating zip file: ${ZIP_DIST}"
 eval cd ${BIN_DIR}
